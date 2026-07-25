@@ -63,6 +63,11 @@
           font-weight: 400;
           padding: 1rem;
           cursor: pointer;
+
+          iconify-icon {
+            font-size: 1.25rem;
+            vertical-align: middle;
+          }
         }
       }
     }

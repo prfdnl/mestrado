@@ -1,0 +1,168 @@
+<h1>Área Administrativa</h1>
+<div class="card">
+  <h2>
+    Edita Publicador
+    <span>procurar</span>
+  </h2>
+  <form>
+    <label>
+      <span>Nome do Publicador</span>
+      <input type="text" name="search" placeholder="Digite o nome do publicador">
+    </label>
+    <label>
+      <span>Instituição do Publicador</span>
+      <select name="instituicao">
+        <option value="IFC">IFC</option>
+        <option value="IFSC">IFSC</option>
+        <option value="UFSC" selected>UFSC</option>
+        <option value="IFPR">IFPR</option>
+        <option value="UDESC">UDESC</option>
+        <option value="FURG">FURG</option>
+        <option value="UFPEL">UFPEL</option>
+        <option value="UFPR">UFPR</option>
+        <option value="UNISUL">UNISUL</option>
+        <option value="UNESC">UNESC</option>
+        <option value="UNIVALI">UNIVALI</option>
+        <option value="USP">USP</option>
+        <option value="UNESP">UNESP</option>
+      </select>
+    </label>
+  </form>
+
+  <div class="pils">
+    <label><input type="radio" name="publicador" value="1">Daniel de Andrade Varela</label>
+    <label><input type="radio" name="publicador" value="2">João da Silva</label>
+    <label><input type="radio" name="publicador" value="3">Maria de Souza</label>
+    <label><input type="radio" name="publicador" value="4">José dos Santos</label>
+    <label><input type="radio" name="publicador" value="5">Ana Paula Oliveira</label>
+    <label><input type="radio" name="publicador" value="6">Lucas Pereira</label>
+    <label><input type="radio" name="publicador" value="7">Fernanda Costa</label>
+    <label><input type="radio" name="publicador" value="8">Rafael Almeida</label>
+    <label><input type="radio" name="publicador" value="9">Juliana Martins</label>
+    <label><input type="radio" name="publicador" value="10">Bruno Rodrigues</label>
+  </div>
+
+  <div class="actions">
+    <button>Buscar Públicador</button>
+    <button>Remover Permanentemente</button>
+    <button>Novo Publicador</button>
+  </div>
+</div>
+
+<h2>
+  Status de Publicações
+  <span>lista de publicações</span>
+</h2>
+
+<div class="card-container">
+  <div class="card destaq publicacoes">
+    <span class="icon">
+      <iconify-icon icon="material-symbols:book-5-rounded"></iconify-icon>
+    </span>
+    <span class="title">publicações:</span>
+    <span class="value">10</span>
+  </div>
+  
+  <div class="card destaq citacoes">
+    <span class="icon">
+      <iconify-icon icon="material-symbols:share"></iconify-icon>
+    </span>
+    <span class="title">citações geradas:</span>
+    <spa class="value"n>5</span> 
+    </div>
+    
+    <div class="card destaq acessos">
+    <span class="icon">
+      <iconify-icon icon="material-symbols:visibility"></iconify-icon>
+    </span>
+    <span class="title">acessos:</span>
+    <span class="value">20</span>
+  </div>
+</div>
+
+<h2>Cadastro de novo Publicador</h2>
+<div class="card">
+  <form>
+    <label>
+      <span>Nome do Publicador</span>
+      <input type="text" name="nome" placeholder="Digite o nome do publicador">
+    </label>
+    <label>
+      <span>E-mail do Publicador</span>
+      <input type="email" name="email" placeholder="Digite o e-mail do publicador">
+    </label>
+    <label>
+      <span>Senha do Publicador</span>
+      <input type="password" name="senha" placeholder="Digite a senha do publicador">
+    </label>
+    <label>
+      <span>Confirmação de Senha</span>
+      <input type="password" name="confirmacao-senha" placeholder="Confirme a senha do publicador">
+    </label>
+    <label>
+      <span>Instituição do Publicador</span>
+      <select name="instituicao">
+        <option value="IFC">IFC</option>
+        <option value="IFSC">IFSC</option>
+        <option value="UFSC" selected>UFSC</option>
+        <option value="IFPR">IFPR</option>
+        <option value="UDESC">UDESC</option>
+        <option value="FURG">FURG</option>
+        <option value="UFPEL">UFPEL</option>
+        <option value="UFPR">UFPR</option>
+        <option value="UNISUL">UNISUL</option>
+        <option value="UNESC">UNESC</option>
+        <option value="UNIVALI">UNIVALI</option>
+        <option value="USP">USP</option>
+        <option value="UNESP">UNESP</option>
+      </select>
+    </label>
+  </form>
+  <div class="actions">
+    <button>Salvar Alterações</button>
+  </div>
+</div>
+
+<h2>
+  Publicações
+  <span>lista de publicações</span>
+</h2>
+
+<div class="card full-height">
+  <form>
+    <label>
+      <span>Nome da Publicação</span>
+      <input type="text" name="nome" placeholder="Digite o nome da publicação">
+    </label>
+    <label>
+      <span>Data de Publicação</span>
+      <input type="date" name="data">
+    </label>
+    <label>
+      <span>Resumo da Publicação</span>
+      <textarea name="resumo" placeholder="Digite o resumo da publicação"></textarea>
+    </label>
+    <label>
+      <span>Tipo de Publicação</span>
+      <select name="tipo">
+        <option value="video-eduplay">Vídeo Eduplay</option>
+        <option value="audio-eduplay">Podcast Eduplay</option>
+        <option value="video-youtube">Vídeo Youtube</option>
+        <option value="video-twitch">Clip Twitch</option>
+        <option value="pdf">Link direto para PDF</option>
+      </select>
+    </label>
+    <label>
+      <span>Link da Publicação</span>
+      <input type="url" name="link" placeholder="Digite o link da publicação">
+    </label>
+  </form>
+  <div class="actions">
+    <button>Excluir Permanentemente</button>
+    <button>Salvar Alterações</button>
+  </div>
+</div>
+
+<div class="card only-button">
+  <button>+</button>
+</div>

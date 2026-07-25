@@ -9,120 +9,22 @@
 <body>
   
   <header>
+    <iconify-icon icon="mdi:home"></iconify-icon>
     <input type="radio" name="__theme" value="light" id="light">
     <input type="radio" name="__theme" value="dark" id="dark">
   </header>
   
   <aside>
+    <div class="profile">
+      <img src="https://avatars.githubusercontent.com/u/1902294?v=4" alt="Profile Picture">
+      <h2>Nome do Usuário</h2>
+      <span>Administrador</span>
+    </div>
     <x-menu></x-menu>
   </aside>
 
   <main>
-    <h1>Área Administrativa</h1>
-    <div class="card">
-      <h2>
-        Editar Instituição
-        <span>selecione a instituição que deseja editar</span>
-      </h2>
-      <div class="pils">
-        <label><input type="radio" name="instituicao" value="IFC">IFC</label>
-        <label><input type="radio" name="instituicao" value="IFSC">IFSC</label>
-        <label><input type="radio" name="instituicao" value="UFSC" checked>UFSC</label>
-        <label><input type="radio" name="instituicao" value="IFPR">IFPR</label>
-        <label><input type="radio" name="instituicao" value="UDESC">UDESC</label>
-        <label><input type="radio" name="instituicao" value="FURG">FURG</label>
-        <label><input type="radio" name="instituicao" value="UFPEL">UFPEL</label>
-        <label><input type="radio" name="instituicao" value="UFPR">UFPR</label>
-        <label><input type="radio" name="instituicao" value="UNISUL">UNISUL</label>
-        <label><input type="radio" name="instituicao" value="UNESC">UNESC</label>
-        <label><input type="radio" name="instituicao" value="UNIVALI">UNIVALI</label>
-        <label><input type="radio" name="instituicao" value="USP">USP</label>
-        <label><input type="radio" name="instituicao" value="UNESP">UNESP</label>
-      </div>
-      <div class="actions">
-        <button>nova instituição</button>
-      </div>
-    </div>
-
-    <h1>Cadastro de Instituição</h1>
-    <div class="card">
-      <form>
-        <label>
-          <span>Nome da Instituição</span>
-          <input type="text" name="nome" placeholder="Digite o nome da instituição">
-        </label>
-        <label>
-          <span>Sigla da Instituição</span>
-          <input type="text" name="sigla" placeholder="Digite a sigla da instituição">
-        </label>
-        <label>
-          <span>CNPJ da Instituição</span>
-          <input type="text" name="cnpj" placeholder="Digite o CNPJ da instituição">
-        </label>
-        <label>
-          <span>Endereço da Instituição</span>
-          <input type="text" name="endereco" placeholder="Digite o endereço da instituição">
-        </label>
-        <label>
-          <span>Telefone da Instituição</span>
-          <input type="text" name="telefone" placeholder="Digite o telefone da instituição">
-        </label>
-        <label>
-          <span>E-mail da Instituição</span>
-          <input type="email" name="email" placeholder="Digite o e-mail da instituição">
-        </label>
-        <label>
-          <span>Site da Instituição</span>
-          <input type="url" name="site" placeholder="Digite o site da instituição">
-        </label>
-      </form>
-      <div class="actions">
-        <button type="submit">Salvar Alterações</button>  
-      </div>
-    </div>
-
-    <h2>
-      Campus
-      <span>Cadastro de Campus</span>
-    </h2>
-
-    <div class="card full-height">
-      <form>
-        <label>
-          <span>Nome do Campus</span>
-          <input type="text" name="nome" placeholder="Digite o nome do campus">
-        </label>
-        <label>
-          <span>Sigla do Campus</span>
-          <input type="text" name="sigla" placeholder="Digite a sigla do campus">
-        </label>
-        <label>
-          <span>Endereço do Campus</span>
-          <input type="text" name="endereco" placeholder="Digite o endereço do campus">
-        </label>
-        <label>
-          <span>Telefone do Campus</span>
-          <input type="text" name="telefone" placeholder="Digite o telefone do campus">
-        </label>
-        <label>
-          <span>E-mail do Campus</span>
-          <input type="email" name="email" placeholder="Digite o e-mail do campus">
-        </label>
-        <label>
-          <span>Site do Campus</span>
-          <input type="url" name="site" placeholder="Digite o site do campus">
-        </label>
-      </form>
-      <div class="actions">
-        <button type="submit">Excluir Permanentemente</button>
-        <button type="submit">Salvar Alterações</button>
-      </div>
-    </div>
-
-    <div class="card only-button">
-      <button>+</button>
-    </div>
-
+    <x-cadastro-instituicao></x-cadastro-instituicao>
   </main>
 </body>
 </html>

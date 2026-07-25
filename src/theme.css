@@ -110,6 +110,12 @@ textarea {
   }
 }
 
+::placeholder {
+  color: var(--text-color-secondary);
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
 optgroups,
 option {
   color: var(--text-color);
@@ -182,11 +188,21 @@ a {
 }
 form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-template-rows: auto;
   align-items: start;
   gap: 1rem;
   margin: 1rem 0;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-rows: auto;
+  align-items: start;
+  gap: 1rem;
+  margin: 1rem 0;
+  grid-column: 1 / -1;
 }
 
 .card {

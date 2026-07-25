@@ -12,11 +12,11 @@ class Component extends HTMLElement {
     const style = new CSSStyleSheet();
     style.replaceSync(css.toString());
     root.adoptedStyleSheets = [style];
-    const template = root.children[0] as HTMLTemplateElement;
-    const content = template.content;
-    this.#mainUl = content.querySelector('ul') as HTMLUListElement;
-    this.#mostrador = content.querySelector('.mostrador') as HTMLDivElement;
-    root.appendChild(content);
+    const template = root.querySelector('template') as HTMLTemplateElement;
+    const content = template ? template.content.cloneNode(true) as DocumentFragment : root;
+    if (template) root.appendChild(content);
+    this.#mainUl = root.querySelector('ul') as HTMLUListElement;
+    this.#mostrador = root.querySelector('.mostrador') as HTMLDivElement;
     this.#magic();
   }
 
@@ -30,11 +30,27 @@ class Component extends HTMLElement {
   }
 
   #magic() {
+    const initialUrl = new URL(window.location.href);
+    const initialPath = initialUrl.pathname;
+    const initialLi = this.#mainUl.querySelector(`li>ul>li[data-link="${initialPath}"]`) as HTMLLIElement;
+    if (initialLi) {
+      initialLi.classList.add('active');
+      this.#alignMostrador(initialLi);
+    }
+
     const lis = this.#mainUl.querySelectorAll('li>ul>li') as NodeListOf<HTMLLIElement>;
-    const activeLi = this.#mainUl.querySelector('li>ul>li.active') as HTMLLIElement;
-    if (activeLi) this.#alignMostrador(activeLi);
-    lis.forEach(li => li.addEventListener('mouseenter', () => this.#alignMostrador(li)));
+    lis.forEach(li => {
+      li.addEventListener('mouseenter', () => this.#alignMostrador(li))
+      li.addEventListener('click', () => {
+        lis.forEach(li => li.classList.remove('active'));
+        li.classList.add('active');
+        const link = li.dataset.link;
+        if (link) history.pushState(null, '', link);
+        window.dispatchEvent(new CustomEvent('menu-link-changed', { detail: { link } }));
+      });
+    });
     this.addEventListener('mouseleave', () => {
+      const activeLi = this.#mainUl.querySelector('li>ul>li.active') as HTMLLIElement;
       if (activeLi) this.#alignMostrador(activeLi);
     })
   }
