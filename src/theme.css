@@ -1,0 +1,240 @@
+html {
+  color-scheme: light dark;
+}
+
+body:has(input[type=radio][name='__theme'][value='light']:checked) {
+  color-scheme: light;
+}
+
+body:has(input[type=radio][name='__theme'][value='dark']:checked) {
+  color-scheme: dark;
+}
+
+:root {
+  --primary-color: light-dark(
+    #e0e0e0,
+    #212529);
+
+  --secundary-color: light-dark(
+    #712cf9,
+    #712cf9);
+
+  --tertiary-color: light-dark(
+    tomato,
+    tomato);
+
+  --secundary-color-light: light-dark(
+    oklch(from var(--secundary-color) calc(l + 0.2) c h),
+    oklch(from var(--secundary-color) calc(l + 0.2) c h));
+
+  --secundary-color-light2: light-dark(
+    oklch(from var(--secundary-color) calc(l + 0.4) c h),
+    oklch(from var(--secundary-color) calc(l + 0.4) c h));
+
+  --secundary-color-light3: light-dark(
+    oklch(from var(--secundary-color) calc(l + 0.6) c h),
+    oklch(from var(--secundary-color) calc(l + 0.6) c h));
+    
+  /* --- */
+
+  --background-color: light-dark(
+    var(--primary-color),
+    var(--primary-color));
+
+  --secundary-background-color: light-dark(
+    oklch(from var(--primary-color) calc(l + 0.05) c h),
+    oklch(from var(--primary-color) calc(l + 0.05) c h));
+
+  --surface-color: light-dark(
+    oklch(from var(--primary-color) calc(l + 0.3) c h),
+    oklch(from var(--primary-color) calc(l + 0.1) c h));
+
+  --text-color: light-dark(
+    oklch(from var(--primary-color) calc(l - 0.6) c h),
+    oklch(from var(--primary-color) calc(l + 0.8) c h));
+
+  --text-color-secondary: light-dark(
+    oklch(from var(--text-color) calc(l + 0.1) c h),
+    oklch(from var(--text-color) calc(l - 0.2) c h));
+
+  --border: 1px solid light-dark(
+    oklch(from var(--primary-color) calc(l + 0.1) c h), 
+    #2f343a);
+
+  --shadow: 0 2px 4px light-dark(
+    rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.25));
+}
+
+* {
+  box-sizing: border-box;
+  color: var(--text-color);
+}
+
+h1,h2,h3,
+h4,h5,h6 {
+  display: block;
+  padding: 0;
+  margin: 0;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  span {
+    color: var(--text-color-secondary);
+    display: block;
+    font-size: 50%;
+  }
+}
+
+p {
+  color: var(--text-color);
+  padding: 0;
+  margin: 0;
+  line-height: 1.5em;
+}
+
+button,
+input,
+select,
+button,
+textarea {
+  color: var(--text-color);
+  border: 0 none;
+  border: 1px solid transparent;
+  border-bottom-color: var(--text-color-secondary);
+  transition: border-bottom .2s ease;
+  padding: 1.5rem .25rem 1rem .25rem;
+  background-color: transparent;
+  font-size: 1rem;
+  &:focus {
+    outline: none;
+    border-bottom-color: var(--secundary-color);
+  }
+}
+
+optgroups,
+option {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: var(--secundary-color);
+  border-radius: 0;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--secundary-color);
+    background-color: var(--secundary-color);
+  }
+}
+
+label {
+  display: block;
+}
+
+button {
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color .2s ease;
+  &.primary {
+    background-color: var(--secundary-color);
+    color: var(--secundary-color-light3);
+  }
+  &:active {
+    border-color: var(--secundary-color);
+    background-color: var(--secundary-color-light);
+  }
+}
+
+label:has(span + input),
+label:has(span + select),
+label:has(span + textarea) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  position: relative;
+  span {
+    color: var(--text-color-secondary);
+    background-color: inherit;
+    position: absolute;
+    top: -0.50rem;
+    left: .25rem;
+    font-size: 0.8rem;
+  }
+}
+
+a {
+  color: light-dark(
+    var(--secundary-color),
+    var(--secundary-color-light));
+  text-decoration: none;
+  transition: color .2s ease;
+
+  &:hover {
+    color: light-dark(
+      var(--secundary-color-light),
+      var(--secundary-color-light2));
+  }
+}
+form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-rows: auto;
+  align-items: start;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.card {
+  background-color: var(--surface-color);
+  border: var(--border);
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+
+  > .actions {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+}
+
+.pils {
+  display: flex;
+  flex-wrap: wrap;
+  
+  label {
+    display: inline-block;
+    padding: 0.25rem .8rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    background-color: var(--secundary-color-light);
+    color: var(--secundary-color-light3);
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    &:has(input[type="radio"]:checked),
+    &:has(input[type="checkbox"]:checked) {
+      background-color: var(--secundary-color);
+      color: var(--secundary-color-light3);
+    }
+
+    &:hover {
+      background-color: var(--secundary-color-light2);
+      color: var(--secundary-color-light3);
+    }
+  }
+}

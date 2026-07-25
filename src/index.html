@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Page Title</title>
+
+  <style>
+    html {
+      color-scheme: light dark;
+    }
+
+    [data-theme="light"] {
+      color-scheme: light;
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+    } 
+
+
+    [data-theme] {
+      --primary-color: light-dark(
+           #d7d7d7, 
+           #212529);
+      --secundary-color: light-dark(
+          #712cf9, 
+          #712cf9);
+      --tertiary-color: light-dark(
+          tomato, 
+          tomato);
+      
+      --secundary-color-light: light-dark(
+          oklch(from var(--secundary-color) calc(l + 0.2) c h),
+          oklch(from var(--secundary-color) calc(l + 0.2) c h)
+        );
+      --secundary-color-light2: light-dark(
+          oklch(from var(--secundary-color) calc(l + 0.4) c h),
+          oklch(from var(--secundary-color) calc(l + 0.4) c h)
+        );
+      --secundary-color-light3: light-dark(
+          oklch(from var(--secundary-color) calc(l + 0.6) c h),
+          oklch(from var(--secundary-color) calc(l + 0.6) c h)
+        );
+      --background-color: light-dark(
+          var(--primary-color), 
+          var(--primary-color));
+      --surface-color: light-dark(
+          oklch(from var(--primary-color) calc(l + 0.3) c h),
+          oklch(from var(--primary-color) calc(l + 0.05) c h)
+        );
+      --text-color: light-dark(
+          oklch(from var(--primary-color) calc(l - 0.6) c h),
+          oklch(from var(--primary-color) calc(l + 0.9) c h)
+        );
+      --text-color-secondary: light-dark( 
+          oklch(from var(--text-color) calc(l - 0.1) c h),
+          oklch(from var(--text-color) calc(l - 0.2) c h)
+        );
+      --border: 1px solid light-dark(#b7b7b7, #2f343a);
+      --shadow: 0 2px 4px light-dark(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.25));
+
+
+      h1, h2, h3, h4, h5, h6 {
+        display: block;
+        padding: 0;
+        margin: 0;
+        color: var(--text-color);
+        span {
+          color: var(--text-color-secondary);
+          display: block;
+          font-size: 50%;
+        }
+      }
+
+      p {
+        color: var(--text-color);
+        padding: 0;
+        margin: 0;
+        line-height: 1.5em;
+      }
+
+      button,
+      input,
+      select,
+      button,
+      textarea {
+        color: var(--text-color);
+        border: 0 none;
+        border: 1px solid transparent;
+        border-bottom-color: var(--text-color);
+        transition: border-bottom .2s ease;
+        padding: .55rem .25rem;
+        background-color: transparent;
+        font-size: 1rem;
+        &:focus {
+          outline: none;
+          border-bottom-color: var(--secundary-color);
+        }
+      }
+
+      optgroups,
+      option {
+        color: var(--text-color);
+        background-color: var(--background-color);
+      }
+
+      input[type="radio"],
+      input[type="checkbox"] {
+        display: inline-block;
+        width: 1.2rem;
+        height: 1.2rem;
+        accent-color: var(--secundary-color);
+        border-radius: 0;
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px var(--secundary-color);
+          background-color: var(--secundary-color);
+        }
+      }
+
+      label {
+        display: block;
+      }
+
+      button {
+        border-radius: 0;
+        cursor: pointer;
+        transition: background-color .2s ease;
+        &.primary {
+          background-color: var(--secundary-color);
+          color: var(--secundary-color-light3);
+        }
+        &:active{
+          border-color: var(--secundary-color);
+          background-color: var(--secundary-color-light);
+        }
+      }
+
+      label:has(span + input),
+      label:has(span + select),
+      label:has(span + textarea) {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+        position: relative;
+        span {
+          color: var(--text-color-secondary);
+          background-color: inherit;
+          position: absolute;
+          top: -0.50rem;
+          left: .25rem;
+          font-size: 0.8rem;
+        }
+      }
+
+      a {
+        color: light-dark(
+          var(--secundary-color), 
+          var(--secundary-color-light));
+        text-decoration: none;
+        transition: color .2s ease;
+        &:hover {
+          color: light-dark(
+            var(--secundary-color-light), 
+            var(--secundary-color-light2));
+        }
+      }
+
+      .card {
+        background-color: var(--surface-color);
+        border: var(--border);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: var(--shadow);
+      }
+    }
+  </style>
+
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      >* {
+        height: 100vh;
+        padding: 2rem
+      }
+
+      [data-theme] {
+        background-color: var(--background-color);
+
+        .card {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div data-theme="light">
+    <div class="card">
+      <h1>
+        Card Title
+        <span class="subtitle">Card Subtitle</span>
+      </h1>
+      <a href="https://m2.material.io/design/color/dark-theme.html#custom-application">https://m2.material.io/design/color/dark-theme.html#custom-application</a>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi a doloribus tempore placeat quos id omnis
+        officiis odio similique est numquam eaque voluptas repellendus doloremque corporis minus, saepe cumque ullam?
+        Harum consequatur illum nesciunt corrupti, beatae rerum ratione minus fugit laborum obcaecati, dignissimos quas
+        asperiores tempore aspernatur. Illum molestiae expedita sed reiciendis consequatur molestias! Ducimus ex dolor
+        quia expedita nisi.
+        Facere minus voluptas quisquam magnam corrupti tempora maxime nostrum voluptates consectetur enim cumque
+        dolorem, repellendus temporibus hic deserunt ex suscipit saepe dignissimos. Animi explicabo eveniet cum,
+        recusandae fuga ex minima.</p>
+      <label>
+        <span>Label</span>
+        <input>
+      </label>
+      <label>
+        <span>Label</span>
+        <select>
+          <option>Option 1</option>
+          <option>Option 2</option>
+          <option>Option 3</option>
+        </select>
+      </label>
+      <label>
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+      </label>
+      <label>
+        <input type="radio" name="radio-group">
+        <input type="radio" name="radio-group">
+        <input type="radio" name="radio-group">
+        <input type="radio" name="radio-group">
+        <input type="radio" name="radio-group">
+        <input type="radio" name="radio-group">
+      </label>
+      <div class="button-container">
+        <button>Button</button>
+        <button>Button</button>
+        <button>Button</button>
+        <button>Button</button>
+        <button class="primary">Button</button>
+      </div>
+    </div>
+  </div>
+  <!-- dark é clonado por js -->
+  <script>
+    const lightTheme = document.querySelector('[data-theme="light"]');
+    const darkTheme = lightTheme.cloneNode(true);
+    darkTheme.setAttribute('data-theme', 'dark');
+    lightTheme.after(darkTheme);
+  </script>
+
+</body>
+
+</html>
