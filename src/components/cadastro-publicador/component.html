@@ -80,7 +80,10 @@
   </div>
 </div>
 
-<h2>Cadastro de novo Publicador</h2>
+<h2>
+  Publicador
+  <span>detalhes do publicador</span>
+</h2>
 <div class="card">
   <form>
     <label>
@@ -139,10 +142,6 @@
       <input type="date" name="data">
     </label>
     <label>
-      <span>Resumo da Publicação</span>
-      <textarea name="resumo" placeholder="Digite o resumo da publicação"></textarea>
-    </label>
-    <label>
       <span>Tipo de Publicação</span>
       <select name="tipo">
         <option value="video-eduplay">Vídeo Eduplay</option>
@@ -156,9 +155,14 @@
       <span>Link da Publicação</span>
       <input type="url" name="link" placeholder="Digite o link da publicação">
     </label>
+    <label>
+      <span>Resumo da Publicação</span>
+      <textarea name="resumo" placeholder="Digite o resumo da publicação"></textarea>
+    </label>
   </form>
   <div class="actions">
-    <button>Excluir Permanentemente</button>
+    <button>Editar Transcrições</button>
+    <button>IA - Analisar Link</button>
     <button>Salvar Alterações</button>
   </div>
 </div>

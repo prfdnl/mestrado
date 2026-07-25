@@ -68,6 +68,7 @@ body:has(input[type=radio][name='__theme'][value='dark']:checked) {
 * {
   box-sizing: border-box;
   color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h1,h2,h3,
@@ -101,13 +102,19 @@ textarea {
   border: 1px solid transparent;
   border-bottom-color: var(--text-color-secondary);
   transition: border-bottom .2s ease;
-  padding: 1.5rem .25rem 1rem .25rem;
+  height: 3.5rem;
   background-color: transparent;
+  padding-top: 1rem;
   font-size: 1rem;
   &:focus {
     outline: none;
     border-bottom-color: var(--secundary-color);
   }
+}
+
+textarea {
+  min-height: 10rem;
+  resize: vertical;
 }
 
 ::placeholder {
@@ -136,10 +143,6 @@ input[type="checkbox"] {
   }
 }
 
-label {
-  display: block;
-}
-
 button {
   border-radius: 0;
   cursor: pointer;
@@ -152,6 +155,14 @@ button {
     border-color: var(--secundary-color);
     background-color: var(--secundary-color-light);
   }
+}
+
+label {
+  display: block;
+}
+
+label:has(textarea) {
+  grid-column: 1 / -1;
 }
 
 label:has(span + input),
@@ -202,7 +213,7 @@ form {
   align-items: start;
   gap: 1rem;
   margin: 1rem 0;
-  grid-column: 1 / -1;
+  /* grid-column: 1 / -1; */
 }
 
 .card {
