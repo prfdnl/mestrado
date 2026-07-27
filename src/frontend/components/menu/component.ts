@@ -17,7 +17,17 @@ class Component extends HTMLElement {
     if (template) root.appendChild(content);
     this.#mainUl = root.querySelector('ul') as HTMLUListElement;
     this.#mostrador = root.querySelector('.mostrador') as HTMLDivElement;
+    this.#permissionCheck();
     this.#magic();
+  }
+
+  #permissionCheck() {
+    const roles = globalThis.userdata?.roles || [];
+    console.log('User permissions:', roles)
+    if (!roles?.includes('admin')) {
+      console.log(this.#mainUl)
+      this.#mainUl.querySelector('[data-role="admin"]')?.remove();
+    }
   }
 
   #alignMostrador(li: HTMLLIElement) {

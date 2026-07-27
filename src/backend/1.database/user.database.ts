@@ -1,5 +1,5 @@
 import db from './connection'
-import PasswordService from '../services/Password.service'
+import PasswordService from '../0.services/Password.service'
 
 class CreateUserErrorDuplicate extends Error {
   constructor() {

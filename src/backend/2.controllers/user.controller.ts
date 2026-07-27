@@ -1,4 +1,4 @@
-import { UserDatabase } from '../database/user.database'
+import { UserDatabase } from '../1.database/user.database'
 import { Context } from 'hono'
 
 export namespace UserController {

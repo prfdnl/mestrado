@@ -5,7 +5,12 @@ const SECRET = process.env.JWT_SECRET || Math.random().toString(36).substring(2,
 
 export default new class JwtService {
   async sign(payload: JWTPayload) {
-    return await sign(payload, SECRET, "HS256")
+    payload.exp = (Math.floor(Date.now() / 1000) + 60 * 60)
+    const token = await sign(payload, SECRET, "HS256")
+    delete payload.exp
+    delete payload.iat
+    delete payload.password
+    return { token, payload }
   }
 
   async verify(token: string,) {
@@ -25,6 +30,7 @@ export default new class JwtService {
   async refresh(token: string) {
     const payload = await this.verify(token)
     if (!payload) return null
-    return await this.sign(payload)
+    const { iat, exp, ...rest } = payload
+    return this.sign(rest)
   }
 }

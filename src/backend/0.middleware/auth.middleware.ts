@@ -1,5 +1,5 @@
 import { Context } from 'hono';
-import JwtService from '../services/Jwt.service';
+import JwtService from '../0.services/Jwt.service';
 
 export async function authMiddleware(c: Context, next: () => Promise<void>) {
   const authHeader = c.req.header('Authorization');
