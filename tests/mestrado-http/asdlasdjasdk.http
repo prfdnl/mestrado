@@ -1,0 +1,54 @@
+@host=http://localhost:3000
+
+
+
+###
+# @name CreateUser
+POST {{host}}/api/user HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "password": "password123"
+}
+
+
+
+###
+# @name GetLoginToken
+POST {{host}}/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "password": "password123"
+}
+
+
+
+###
+# @name GetUserById-RecentlyCreated
+GET {{host}}/api/user/{{CreateUser.response.body.$.id}} HTTP/1.1
+Authorization: Bearer {{GetLoginToken.response.body.$}}
+
+
+
+###
+# @name GetUserById-RecentlyCreated
+GET {{host}}/api/user/{{CreateUser.response.body.$.id}} HTTP/1.1
+Authorization: Bearer UUUUUU
+
+
+
+###
+# @name GetUserById-PromptId
+# @prompt id
+GET {{host}}/api/user/{{id}} HTTP/1.1
+Authorization: Bearer {{GetLoginToken.response.body.$}}
+
+
+
+###
+# @name RefreshToken
+POST {{host}}/api/auth/refresh HTTP/1.1
+Cookie: {{GetLoginToken.response.headers.Set-Cookie}}
