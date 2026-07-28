@@ -1,0 +1,28 @@
+info:
+  name: update
+  type: http
+  seq: 3
+
+http:
+  method: PATCH
+  url: "{{api-url}}/user/{{user-id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "login": "admin",
+        "password": "adminaaaaaaa", 
+        "active": false
+      }
+  auth: inherit
+
+runtime:
+  variables:
+    - name: userId
+      value: qweqew
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
