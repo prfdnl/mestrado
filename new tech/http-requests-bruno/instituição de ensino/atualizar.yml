@@ -1,0 +1,24 @@
+info:
+  name: atualizar
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{api-url}}/instituicao/019fa94c-5707-717a-a2f1-354a2354a6a5"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Instituto Federal Catarinense"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

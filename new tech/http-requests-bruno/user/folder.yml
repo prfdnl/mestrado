@@ -5,7 +5,7 @@ info:
 
 request:
   headers:
-    - name: ""
+    - name: user-id
       value: 019fa5a4-7811-7780-9200-a427581da613
   variables:
     - name: user-id

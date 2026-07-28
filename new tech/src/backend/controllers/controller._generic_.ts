@@ -4,8 +4,35 @@ import type { Context } from "hono";
 
 export namespace GenericController {
 
-  export function getOneById(tableName: string, columns: string[]) {
-   
+  export function getMany(tableName: string, databaseColumns: string[]) {
+    return async (c: Context) => {
+      try {
+        const result = await GenericDatabase.getMany(tableName, databaseColumns);
+        return c.json(result);
+      } catch (error) {
+        console.error("Error fetching records:", error);
+        return c.json({ message: "Internal Server Error" }, 500);
+      }
+    }
+  }
+
+  export function getOneById(tableName: string, databaseColumns: string[]) {
+    return async (c: Context) => {
+      const { id } = c.req.param();
+      if (!id)
+        return c.json({ message: "ID is required" }, 400);
+      if (!UUIDService.isValidUUID(id))
+        return c.json({ message: "Invalid ID format" }, 400);
+      try {
+        const result = await GenericDatabase.getOneById(tableName, databaseColumns, id);
+        if (!result)
+          return c.json({ message: "Record not found" }, 404);
+        return c.json(result);
+      } catch (error) {
+        console.error("Error fetching record:", error);
+        return c.json({ message: "Internal Server Error" }, 500);
+      }
+    }
   }
 
   export async function getOneByColumn(tableName: string, column: string, c: Context) {
@@ -14,7 +41,7 @@ export namespace GenericController {
 
   export function createOne(
     tableName: string,
-    columns: string[],
+    databaseColumns: string[],
     hooks?: {
       beforeInsert?: (data: Record<string, any>, c: Context) => Promise<any> | any,
       beforeResponse?: (result: any, c: Context) => Promise<any> | any
@@ -32,7 +59,7 @@ export namespace GenericController {
         if (ret !== undefined) return ret;
       }
       const insertData: Record<string, any> = {};
-      for (const column of columns) {
+      for (const column of databaseColumns) {
         if (data[column] == undefined)
           continue;
         insertData[column] = data[column];
@@ -47,6 +74,10 @@ export namespace GenericController {
         }
         return c.json(result, 201);
       } catch (error: any) {
+        if (error.errno === "23502") {
+          const missingColumns = error?.detail?.match(/\((.*?)\)/)?.[1]?.split(", ") ?? [];
+          return c.json({ message: "Missing required fields", missingColumns }, 400);
+        }
         if (error.errno === "23505") {
           const columns = Object.fromEntries(
             Array.from(
@@ -64,7 +95,7 @@ export namespace GenericController {
 
   export function patchOne(
     tableName: string,
-    updateColumns: string[],
+    updateDatabaseColumns: string[],
     hooks?: {
       beforeFilter?: (updates: Record<string, any>, c: Context) => Promise<any> | any,
       beforeUpdate?: (updates: Record<string, any>, c: Context) => Promise<any> | any,
@@ -88,7 +119,7 @@ export namespace GenericController {
         const ret = await hooks.beforeFilter(data, c);
         if (ret !== undefined) return ret;
       }
-      for (const column of updateColumns) {
+      for (const column of updateDatabaseColumns) {
         if (data[column] == undefined)
           continue;
         updates[column] = data[column];

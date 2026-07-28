@@ -1,9 +1,8 @@
-import { use } from "hono/jsx";
-import { UserDatabase } from "../database/database.user";
 import { JWTService } from "../services/service.jwt";
 import { PasswordService } from "../services/service.password";
 import { getCookie, setCookie } from "hono/cookie";
 import type { Context } from "hono";
+import { GenericDatabase } from "../database/database._generic_";
 
 export namespace AuthController {
   export async function login(c: Context) {
@@ -17,7 +16,7 @@ export namespace AuthController {
     if (!login || !password)
       return c.json({ message: "Login and Password are required" }, 400);
     try {
-      const dbData = await UserDatabase.getUserByLogin(login);
+      const dbData = await GenericDatabase.getOneByColumn("users", ["id", "login", "password_hash", "roles"], "login", login);
       if (!dbData)
         return c.json({ message: "Invalid login or password" }, 401);
       const isPasswordValid = await PasswordService.verify(password, dbData.password_hash);

@@ -1,0 +1,29 @@
+info:
+  name: cadastrar
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{api-url}}/instituicao"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Instituto Federal Catarinense",
+        "sigla": "IFC",
+        "cnpj": "---",
+        "endereco": "---",
+        "email": "---",
+        "telefone": "---"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

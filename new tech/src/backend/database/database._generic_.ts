@@ -3,17 +3,25 @@ import db from "./connection";
 
 export namespace GenericDatabase {
 
+  export async function getMany(tableName: string, columns: string[]) {
+    const sqlTableName = sql(tableName);
+    const sqlColumns = columns.map((column) => sql(column)).reduce((acc, curr) => db`${acc}, ${curr}`);
+    const result = await db`SELECT ${sqlColumns} FROM ${sqlTableName}`;
+    return result;
+  }
+
   export async function getOneById(tableName: string, columns: string[], id: string) {
     const sqlTableName = sql(tableName);
-    const sqlColumns = sql(columns.join(", "));
+    const sqlColumns = columns.map((column) => sql(column)).reduce((acc, curr) => db`${acc}, ${curr}`);
     const result = await db`SELECT ${sqlColumns} FROM ${sqlTableName} WHERE id = ${id}`;
     return result[0];
   }
 
-  export async function getOneByColumn(tableName: string, column: string, value: any) {
+  export async function getOneByColumn(tableName: string, columns: string[], searchColumn: string,  value: any) {
     const sqlTableName = sql(tableName);
-    const sqlColumn = sql(column);
-    const result = await db`SELECT * FROM ${sqlTableName} WHERE ${sqlColumn} = ${value}`;
+    const sqlColumn = sql(searchColumn);
+    const sqlColumns = columns.map((column) => sql(column)).reduce((acc, curr) => db`${acc}, ${curr}`);
+    const result = await db`SELECT ${sqlColumns} FROM ${sqlTableName} WHERE ${sqlColumn} = ${value}`;
     return result[0];
   }
 
