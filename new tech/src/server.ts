@@ -1,13 +1,13 @@
-import { Hono } from "hono"
-import routes from "./backend/routes/main"
+import backendRoutes from "./backend/routes/routes"
 
-const api = new Hono()
-  .route("/api", routes)
+import index from "./frontend/index.html"
+import login from "./frontend/login.html"
 
 const { url } = Bun.serve({
   routes: {
-    "/api/*": api.fetch,
-    "/*": Response.json("Not Found", { status: 404 })
+    "/api/*": backendRoutes.fetch,
+    "/login": login,
+    "/*": index
   }
 })
 

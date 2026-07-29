@@ -6,9 +6,6 @@ info:
 http:
   method: GET
   url: "{{api-url}}/{{target}}"
-  headers:
-    - name: Authorization
-      value: Bearer {{token}}
   body:
     type: json
     data: ""

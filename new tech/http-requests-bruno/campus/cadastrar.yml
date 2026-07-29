@@ -10,12 +10,13 @@ http:
     type: json
     data: |-
       {
-        "nome": "Instituto Federal Catarinense 5",
-        "sigla": "IFC 5",
-        "cnpj": "---5",
-        "endereco": "---5",
-        "email": "---5",
-        "telefone": "---5"
+        "nome": "IFC Camboriú",
+        "instituicao_id": "019fa94c-5707-717a-a2f1-354a2354a6a5",
+        "sigla": "IFC",
+        "cnpj": "---",
+        "endereco": "---",
+        "email": "---4",
+        "telefone": "---4"
       }
   auth: inherit
 

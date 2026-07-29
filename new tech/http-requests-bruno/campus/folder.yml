@@ -1,15 +1,14 @@
 info:
-  name: instituição de ensino
+  name: campus
   type: folder
-  seq: 3
+  seq: 4
 
 request:
   headers:
     - name: Authorization
       value: Bearer {{token}}
-  auth: inherit
   variables:
     - name: target
-      value: instituicao
+      value: campus
     - name: uuid
-      value: 019faf02-e1a3-7445-bb06-7aa3e50dfc79
+      value: 019faf0a-c3d0-7944-82b3-ceacbfbef397

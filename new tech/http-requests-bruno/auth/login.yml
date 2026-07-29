@@ -10,17 +10,10 @@ http:
     type: json
     data: |-
       {
-        "login": "admin",
+        "username": "admin",
         "password": "admin"
       }
   auth: inherit
-
-runtime:
-  scripts:
-    - type: tests
-      code: |-
-        const body = res.getBody();
-        bru.setEnvVar("token", body);
 
 settings:
   encodeUrl: true

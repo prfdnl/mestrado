@@ -16,7 +16,7 @@ runtime:
     - type: tests
       code: |-
         const body = res.getBody();
-        bru.setEnvVar("token", body);
+        bru.setEnvVar("token", body.access_token);
 
 settings:
   encodeUrl: true

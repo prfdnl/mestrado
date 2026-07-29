@@ -2,8 +2,8 @@ import { Hono } from "hono";
 import { AuthMiddleware } from "../middlewares/middleware.auth";
 import { GenericController } from "../controllers/controller._generic_";
 
-const dbtable = "instituicoes";
-const dbcols = ["nome", "cnpj", "endereco", "sigla", "telefone", "email"];
+const dbtable = "publicador";
+const dbcols = ["campus_id", "nome", "email", "telefone"];
 
 export default new Hono()
   .get("/search/:query", AuthMiddleware.authenticate, GenericController.search(dbtable))

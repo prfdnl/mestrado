@@ -4,14 +4,56 @@ import type { Context } from "hono";
 
 export namespace GenericController {
 
-  export function getMany(tableName: string, databaseColumns: string[]) {
+  function databaseErrorHandler(error: any, c: Context) {
+    if (error.errno === "23502") {
+      const missingColumns = error?.detail?.match(/\((.*?)\)/)?.[1]?.split(", ") ?? [];
+      return c.json({ message: "Missing required fields", missingColumns }, 400);
+    }
+
+    if (error.errno === "23503") {
+      const foreignKeyMatch = error?.detail?.match(/Key \((.*?)\)=\((.*?)\) is not present in table "(.*?)"/);
+      const foreignKeyColumn = foreignKeyMatch?.[1] ?? null;
+      const foreignKeyValue = foreignKeyMatch?.[2] ?? null;
+      const referencedTable = foreignKeyMatch?.[3] ?? null;
+      return c.json({ message: "Foreign key constraint violation", foreignKeyColumn, foreignKeyValue, referencedTable }, 400);
+    }
+
+    if (error.errno === "23505") {
+      const duplicateEntryMatch = error?.detail?.match(/Key \((.*?)\)=\((.*?)\) already exists/);
+      const columnName = duplicateEntryMatch?.[1] ?? null;
+      const columnValue = duplicateEntryMatch?.[2] ?? null;
+      return c.json({ message: "Duplicate entry", columnName, columnValue }, 409);
+    }
+
+    if (error.errno === "22P02") {
+      return c.json({ message: "Invalid data type" }, 400);
+    }
+
+    console.error("Database error:", error);
+    return c.json({ message: "Internal Server Error" }, 500);
+  }
+
+  export function search(tableName: string) {
+    return async (c: Context) => {
+      try {
+        const query = c.req.param("query");
+        if (!query)
+          return c.json({ message: "Query parameter is required" }, 400);
+        const result = await GenericDatabase.search(tableName, query);
+        return c.json(result);
+      } catch (error) {
+        return databaseErrorHandler(error, c);
+      }
+    }
+  }
+
+  export function getMany(tableName: string, databaseColumns?: string[]) {
     return async (c: Context) => {
       try {
         const result = await GenericDatabase.getMany(tableName, databaseColumns);
         return c.json(result);
       } catch (error) {
-        console.error("Error fetching records:", error);
-        return c.json({ message: "Internal Server Error" }, 500);
+        return databaseErrorHandler(error, c);
       }
     }
   }
@@ -29,14 +71,9 @@ export namespace GenericController {
           return c.json({ message: "Record not found" }, 404);
         return c.json(result);
       } catch (error) {
-        console.error("Error fetching record:", error);
-        return c.json({ message: "Internal Server Error" }, 500);
+        return databaseErrorHandler(error, c);
       }
     }
-  }
-
-  export async function getOneByColumn(tableName: string, column: string, c: Context) {
-   
   }
 
   export function createOne(
@@ -74,21 +111,7 @@ export namespace GenericController {
         }
         return c.json(result, 201);
       } catch (error: any) {
-        if (error.errno === "23502") {
-          const missingColumns = error?.detail?.match(/\((.*?)\)/)?.[1]?.split(", ") ?? [];
-          return c.json({ message: "Missing required fields", missingColumns }, 400);
-        }
-        if (error.errno === "23505") {
-          const columns = Object.fromEntries(
-            Array.from(
-              (error?.detail?.matchAll(/\((.*?)\)=\((.*?)\)/g) ?? []) as Iterable<RegExpMatchArray>,
-              (match) => [match[1], match[2]] as const
-            )
-          );
-          return c.json({ message: "Duplicate entry", columns }, 409);
-        }
-        console.error("Error inserting record:", error);
-        return c.json({ message: "Internal Server Error" }, 500);
+        return databaseErrorHandler(error, c);
       }
     }
   }
@@ -140,17 +163,7 @@ export namespace GenericController {
         }
         return c.json(result[0]);
       } catch (error: any) {
-        if (error.errno === "23505") {
-          const columns = Object.fromEntries(
-            Array.from(
-              (error?.detail?.matchAll(/\((.*?)\)=\((.*?)\)/g) ?? []) as Iterable<RegExpMatchArray>,
-              (match) => [match[1], match[2]] as const
-            )
-          );
-          return c.json({ message: "Duplicate entry", columns }, 409);
-        }
-        console.error("Error updating record:", error);
-        return c.json({ message: "Internal Server Error" }, 500);
+        return databaseErrorHandler(error, c);
       }
     }
   }

@@ -10,12 +10,10 @@ http:
     type: json
     data: |-
       {
-        "nome": "Instituto Federal Catarinense 5",
-        "sigla": "IFC 5",
-        "cnpj": "---5",
-        "endereco": "---5",
-        "email": "---5",
-        "telefone": "---5"
+        "campus_id": "019fadfd-4c8a-7fc8-b637-6a4079af44e9",
+        "nome": "Raquel Welter",
+        "email": "asdsdas@asdasd.co",
+        "telefone": "asda"
       }
   auth: inherit
 

@@ -4,14 +4,14 @@ import type { Context } from "hono";
 
 export namespace UserController {
   export async function getUserById(c: Context) {
-    const fnGet = GenericController.getOneById("users", ["id", "login", "roles", "active"]);
+    const fnGet = GenericController.getOneById("user", ["id", "username", "roles", "active"]);
     return fnGet(c);
   }
 
   export async function createUser(c: Context) {
-     const fnCreate = GenericController.createOne("users", ["login", "password_hash"], {
+     const fnCreate = GenericController.createOne("user", ["username", "password_hash"], {
       beforeInsert: async (data, c) => {
-        if (!data.password) return c.json({ message: "Login and Password are required" }, 400);
+        if (!data.password) return c.json({ message: "Username and Password are required" }, 400);
         data.password_hash = await PasswordService.hash(data.password);
         delete data.password;
       },
@@ -24,7 +24,7 @@ export namespace UserController {
   }
 
   export async function patchUser(c: Context) {
-    const fnPatch = GenericController.patchOne("users", ["login", "password_hash", "active"], {
+    const fnPatch = GenericController.patchOne("user", ["username", "password_hash", "active"], {
       beforeFilter: async (updates, c) => {
         if (!updates.password) return
         updates.password_hash = await PasswordService.hash(updates.password);
