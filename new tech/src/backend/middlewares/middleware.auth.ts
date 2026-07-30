@@ -15,4 +15,22 @@ export namespace AuthMiddleware {
     c.set("user", payload);
     await next();
   }
+
+  export function adminOnly(c: Context, next: Next) {
+    const user = c.get<any>("user");
+    if (!user || !user.roles || !user.roles.includes("admin")) {
+      return c.json({ message: "Admin access required" }, 403);
+    }
+    return next();
+  }
+
+  export function userOwnership(userParamName: string = "id") {
+    return async (c: Context, next: Next) => {
+      const user = c.get<any>("user");
+      const userId = c.req.param(userParamName);
+      if (!user || !user.roles || !user.roles.includes("admin") && user.userId !== userId)
+        return c.json({ message: "User not owner" }, 401);
+      return  next();
+    }
+  }
 }

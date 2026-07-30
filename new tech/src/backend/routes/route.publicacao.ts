@@ -2,29 +2,27 @@ import { Hono } from "hono";
 import { AuthMiddleware } from "../middlewares/middleware.auth";
 import { GenericController } from "../controllers/controller._generic_";
 
-const dbtable = "campus";
-const dbcols = [ "id", "instituicao_id", "nome", "sigla", "endereco", "email", "telefone"];
+const dbtable = "publicacao";
+const dbcols = [ "id", "publicador_id", "titulo", "tipo", "transcricao" ];
 
 export default new Hono()
 
   .get("/search/:query", 
-    AuthMiddleware.authenticate, 
+    AuthMiddleware.authenticate,
     GenericController.search(dbtable))
 
   .get("/", 
-    AuthMiddleware.authenticate, 
-    GenericController.getMany(dbtable, dbcols))
+    AuthMiddleware.authenticate,
+    GenericController.getMany(dbtable, ["id", ...dbcols]))
 
   .get("/:id", 
-    AuthMiddleware.authenticate, 
+    AuthMiddleware.authenticate,
     GenericController.getOneById(dbtable, dbcols))
 
-  .post("/", 
-    AuthMiddleware.authenticate, 
-    AuthMiddleware.adminOnly,
+  .post("/:publicador_id", 
+    AuthMiddleware.authenticate,
     GenericController.createOne(dbtable, dbcols))
 
   .patch("/:id", 
-    AuthMiddleware.authenticate, 
-    AuthMiddleware.adminOnly,
+    AuthMiddleware.authenticate,
     GenericController.patchOne(dbtable, dbcols))

@@ -1,23 +1,12 @@
+import './cmp-admin-search'
 const html = /*html*/`
   <h1>Publicadores</h1>
-  <div id="area-admin">
-    <h2>Admin Area</h2>
-    <search>
-      <input type="search" placeholder="Search..." />
-      <button>Search</button>
-    </search>
-    <div class="pills">
-      <label class="pill">
-        <input type="radio" name="load" checked value="" />
-        <span>
-          Novo Publicador
-        </span>
-      </label>
-    </div>
-  </div>
+
+  <cmp-admin-search data-search-fetch="publicador" data-label="nome"></cmp-admin-search>
   <div id="publicador">
     <h2>Publicador</h2>
     <form>
+      <input type="hidden" name="id" id="id">
       <div class="form-group">
         <label for="nome">Nome</label>
         <input type="text" id="nome" name="nome" required>
@@ -30,7 +19,9 @@ const html = /*html*/`
         <label for="telefone">Telefone</label>
         <input type="text" id="telefone" name="telefone" required>
       </div>
-      <button type="submit">Salvar</button>
+      <div class="form-group">
+        <button type="submit">Salvar</button>
+      </div>
     </form>
   </div>
   <div id="publicacoes">
@@ -38,23 +29,33 @@ const html = /*html*/`
     <template id="temp-publicacao">
       <div class="card">
         <form>
+          <input type="hidden" name="id" id="id">
           <div class="form-group">
             <label for="publicacao-titulo">Título</label>
-            <input type="text" id="publicacao-titulo" name="publicacao-titulo" required>
+            <input type="text" id="titulo" name="titulo" required>
           </div>
           <div class="form-group">
-            <label for="publicacao-ano">Ano</label>
-            <input type="number" id="publicacao-ano" name="publicacao-ano" required>
+            <label for="tipo">Tipo</label>
+            <input type="text" id="tipo" name="tipo" required>
           </div>
           <div class="form-group">
-            <label for="publicacao-editora">Editora</label>
-            <input type="text" id="publicacao-editora" name="publicacao-editora" required>
+            <label for="transcricao">Transcrição</label>
+            <input type="text" id="transcricao" name="transcricao" required>
+          </div>
+          <div class="form-group">
+            <label for="link">Link</label>
+            <input type="text" id="link" name="link" required>
+          </div>
+          <div class="form-group">
+            <label for="resumo">Resumo</label>
+            <input type="text" id="resumo" name="resumo" required>
           </div>
           <button type="submit">Excluir Publicação</button>
           <button type="submit">Salvar Publicação</button>
         </form>
       </div>
     </template>
+    <button id="add-publicacao">Adicionar Publicação</button>
   </div>
 `
 
@@ -71,75 +72,84 @@ class C extends HTMLElement {
     root.innerHTML = html;
     const adminArea: HTMLDivElement = root.querySelector('#area-admin') as HTMLDivElement;
     this.#els = {
-      adminSearchInput: adminArea.querySelector('search input') as HTMLInputElement,
-      adminFounded: adminArea.querySelector('.pills') as HTMLElement,
-      publicacoes: root.querySelector('#publicacoes') as HTMLElement,
+      adminSearch: root.querySelector('cmp-admin-search') as HTMLElement,
+      form: root.querySelector('#publicador form') as HTMLFormElement,
+      publicacoesContainer: root.querySelector('#publicacoes') as HTMLDivElement,
+      publicacaoTemplate: root.querySelector('#temp-publicacao') as HTMLTemplateElement,
     }
-    this.#init();
+
+    this.#els.adminSearch.addEventListener('pill-selected', (e: Event) => {
+      const selectedData = (e as CustomEvent).detail;
+      this.#adminSelectedData = selectedData;
+      console.log('Selected Publicador Data:', selectedData);
+    })
+
+    if (!user.roles.includes('admin') || this.getAttribute('data-role') === 'publisher') {
+      adminArea.remove()
+    } else {
+      this.#adminMode();
+    }
   }
 
-  #adminSearch() {
-    this.#els.adminSearchInput.addEventListener('input', async (e) => {
-      const value = (e.target as HTMLInputElement).value.toLowerCase();
-      if (!value) {
-        this.#els.adminFounded.innerHTML = '';
-        this.#adminSearchController?.abort('Search cleared');
+  #adminMode() {
+    this.#els.adminSearch.addEventListener('pill-selected', (e: Event) => {
+      const selectedData = (e as CustomEvent).detail;
+      if (!selectedData) {
+        this.#clearAll();
         return;
       }
-      if (this.#cancelAdminSearch) 
-        clearTimeout(this.#cancelAdminSearch);
-      this.#adminSearchController?.abort('New search initiated');
-      const controller = this.#adminSearchController = new AbortController();
-      const orinalContent = this.#els.adminFounded.innerHTML;
-      this.#cancelAdminSearch = setTimeout(async () => {
-        try {
-          const response = await fetch(`/api/publicador/search/${value}`, { 
-            headers: { 'Authorization': `Bearer ${globalThis.user.token}` },
-            signal: controller.signal 
-          });
-          if (!response.ok) {
-            console.error('Search request failed:', response.statusText);
-            return;
-          }
-          const results = this.#adminSelectedData = await response.json();
-          this.#els.adminFounded.innerHTML = orinalContent + results.map((item: any) => `<label class="pill">
-            <input type="radio" name="load" value="${item.id}" />
-            <span>
-              ${item.nome}
-            </span>
-          </label>`).join('');
-        } catch (error: any) {
-          console.error(error);
-        }
-      }, 500); // Debounce time of 300ms
-    });
-  }
-
-  #adminSelect() {
-    this.#els.adminFounded.addEventListener('change', (e) => {
-      const selectedId = (e.target as HTMLInputElement).value;
-      const selectedData = this.#adminSelectedData?.find((item: any) => item.id === selectedId);
-      this.#populatePublicadorForm(selectedData);
+      this.#populateForm(selectedData);
     })
   }
 
-  #populatePublicadorForm(data: any) {
-    const form = this.#root.querySelector('#publicador form') as HTMLFormElement;
-    (form.querySelector('#nome') as HTMLInputElement).value = data?.nome || '';
-    (form.querySelector('#email') as HTMLInputElement).value = data?.email || '';
-    (form.querySelector('#telefone') as HTMLInputElement).value = data?.telefone || '';
+  async #populateForm(data: any) {
+    const { form } = this.#els;
+    this.#clearAll();
+    if (!form) return;
+    for (const key in data) {
+      const input = form.querySelector(`[name="${key}"]`) as HTMLInputElement;
+      if (input) input.value = data[key] ?? '';
+    }
+    const publicacoesResponse = await fetch(`/api/publicacao/search/${data.id}`, {
+      headers: { 'Authorization': `Bearer ${globalThis.user.token}` }
+    });
+    if (!publicacoesResponse.ok) {
+      console.error('Failed to fetch publicações data:', publicacoesResponse.statusText);
+      return;
+    }
+    const publicacoesData = await publicacoesResponse.json();
+    publicacoesData.forEach((publicacao: any) => this.#createPublicacaoCard(publicacao));
   }
 
-  #createDomPublicacao() {
-    const template = this.#root.querySelector('#temp-publicacao') as HTMLTemplateElement;
-    const content = template.content.cloneNode(true) as DocumentFragment;
-    this.#els.publicacoes.before(content);
+  #clearForm() {
+    const { form } = this.#els;
+    if (!form) return;
+    form.reset();
   }
 
-  #init() {
-    this.#adminSearch();
-    this.#adminSelect();
+  #createPublicacaoCard(publicacaoData: any) {
+    const { publicacoesContainer, publicacaoTemplate } = this.#els;
+    if (!publicacoesContainer || !publicacaoTemplate) return;
+    const card = publicacaoTemplate.content.cloneNode(true) as HTMLElement;
+    for (const key in publicacaoData) {
+      const input = card.querySelector(`[name="${key}"]`) as HTMLInputElement;
+      if (input) input.value = publicacaoData[key] ?? '';
+    }
+    publicacaoTemplate.before(card);
   }
+
+  #clearAll() {
+    this.#clearForm();
+    this.#clearPublicacaoCards();
+  }
+
+  #clearPublicacaoCards() {
+    const { publicacoesContainer } = this.#els;
+    if (!publicacoesContainer) return;
+    const cards = publicacoesContainer.querySelectorAll(':scope > .card');
+    cards.forEach(card => card.remove());
+  }
+ 
 }
 
 customElements.define('cmp-publicadores', C);

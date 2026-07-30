@@ -2,6 +2,7 @@ import './main.css'
 import './components/cmp-login'
 import './components/cmp-instituicoes'
 import './components/cmp-publicadores'
+import './components/cmp-admin-search'
 const main = document.querySelector('main') as HTMLElement
 
 // --- ROLES_LOAD ------------------------------------------------------------------------------------------------------
@@ -42,7 +43,7 @@ const main = document.querySelector('main') as HTMLElement
   }
 
   if (globalThis.user.roles.includes('user')) {
-    routes['/publicador'] = `<h1>User Area</h1><p>Welcome, ${globalThis.user.username}!</p>`
+    routes['/publicador'] = `<cmp-publicadores data-role="publisher"></cmp-publicadores>`
   }
 
   function routeGo(e?: Event) {

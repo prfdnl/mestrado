@@ -56,10 +56,14 @@ export namespace GenericDatabase {
 
   export async function deleteOneById(tableName: string, id: string) {
     const sqlTableName = sql(tableName);
-    await elasticsearch.delete({
-      index: tableName,
-      id: id
-    });
+    try {
+      await elasticsearch.delete({
+        index: tableName,
+        id: id
+      });
+    } catch (error) {
+      console.error("Elasticsearch delete error:", error);
+    }
     await postgres`DELETE FROM ${sqlTableName} WHERE id = ${id}`;
   }
 
@@ -86,11 +90,24 @@ export namespace GenericDatabase {
     let setClause = sqlSetsSnippets.reduce((acc, curr) => postgres`${acc}, ${curr}`);
     setClause = postgres`${setClause}, updated_at = NOW()`;
     const result = await postgres`UPDATE ${sqlTableName} SET ${setClause} WHERE id = ${id} RETURNING *`;
-    await elasticsearch.update({
-      index: tableName,
-      id: id,
-      doc: result[0]
-    });
+    try {
+      await elasticsearch.update({
+        index: tableName,
+        id: id,
+        doc: result[0]
+      });
+    } catch (error) {
+      try {
+        await elasticsearch.index({
+          index: tableName,
+          id: id,
+          document: result[0]
+        });
+      } catch (error) {
+        console.error("Elasticsearch update/index error:", error);
+      }
+      console.error("Elasticsearch update error:", error);
+    }
     return result;
   }
 }

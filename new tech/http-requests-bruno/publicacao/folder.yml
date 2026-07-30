@@ -1,7 +1,7 @@
 info:
-  name: publicador
+  name: publicacao
   type: folder
-  seq: 5
+  seq: 6
 
 request:
   headers:
@@ -9,6 +9,6 @@ request:
       value: Bearer {{token}}
   variables:
     - name: target
-      value: publicador
+      value: publicacao
     - name: uuid
-      value: 019fa5a4-7811-7780-9200-a427581da613
+      value: 019fb068-a34b-7546-bd19-1969ad1d2dd3

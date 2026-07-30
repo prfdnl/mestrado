@@ -17,7 +17,8 @@ export namespace AuthController {
     if (!username || !password)
       return c.json({ message: "Username and Password are required" }, 400);
     try {
-      const dbData = await GenericDatabase.getOneByColumn("user", ["id", "username", "password_hash", "roles", "active"], "username", username);
+      const dbData = await GenericDatabase.getOneByColumn("users", ["id", "username", "password_hash", "roles", "active"], "username", username);
+
       if (!dbData.active)
         return c.json({ message: "User is not active" }, 403);
       if (!dbData)

@@ -58,6 +58,18 @@ export namespace GenericController {
     }
   }
 
+  export function getManyByColumn(tableName: string, databaseColumns: string[], searchColumn: string) {
+    return async (c: Context) => {
+      const value = c.req.param(searchColumn);
+      try {
+        const result = await GenericDatabase.getManyByColumn(tableName, databaseColumns, searchColumn, value);
+        return c.json(result);
+      } catch (error) {
+        return databaseErrorHandler(error, c);
+      }
+    }
+  }
+
   export function getOneById(tableName: string, databaseColumns: string[]) {
     return async (c: Context) => {
       const { id } = c.req.param();

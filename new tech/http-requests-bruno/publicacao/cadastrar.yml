@@ -1,0 +1,25 @@
+info:
+  name: cadastrar
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{api-url}}/{{target}}"
+  body:
+    type: json
+    data: |-
+      {
+        "publicador_id": "019faf9c-8538-74fa-b1c7-3b80f29364d2",
+        "titulo": "",
+        "tipo": "",
+        "transcricao": "",
+        "link": ""
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

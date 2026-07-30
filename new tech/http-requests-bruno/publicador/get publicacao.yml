@@ -1,17 +1,14 @@
 info:
-  name: atualizar
+  name: get publicacao
   type: http
-  seq: 2
+  seq: 6
 
 http:
-  method: PATCH
-  url: "{{api-url}}/{{target}}/{{uuid}}"
+  method: GET
+  url: "{{api-url}}/{{target}}/{{uuid}}/publicacoes"
   body:
     type: json
-    data: |-
-      {
-        "nome": "RONALDO"
-      }
+    data: ""
   auth: inherit
 
 settings:

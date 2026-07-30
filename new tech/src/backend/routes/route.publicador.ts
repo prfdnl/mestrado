@@ -6,8 +6,29 @@ const dbtable = "publicador";
 const dbcols = ["campus_id", "nome", "email", "telefone"];
 
 export default new Hono()
-  .get("/search/:query", AuthMiddleware.authenticate, GenericController.search(dbtable))
-  .get("/", AuthMiddleware.authenticate, GenericController.getMany(dbtable, ["id", ...dbcols]))
-  .get("/:id", AuthMiddleware.authenticate, GenericController.getOneById(dbtable, dbcols))
-  .post("/", AuthMiddleware.authenticate, GenericController.createOne(dbtable, dbcols))
-  .patch("/:id", AuthMiddleware.authenticate, GenericController.patchOne(dbtable, dbcols))
+
+  .get("/:publicador_id/publicacoes", 
+    AuthMiddleware.authenticate, 
+    GenericController.getManyByColumn("publicacao", ["id", "titulo", "tipo", "transcricao", "link"], "publicador_id")  )
+
+  .get("/search/:query", 
+    AuthMiddleware.authenticate, 
+    GenericController.search(dbtable))
+
+  .get("/", 
+    AuthMiddleware.authenticate, 
+    GenericController.getMany(dbtable, ["id", ...dbcols]))
+
+  .get("/:id", 
+    AuthMiddleware.authenticate, 
+    GenericController.getOneById(dbtable, dbcols))
+
+  .post("/", 
+    AuthMiddleware.authenticate, 
+    AuthMiddleware.adminOnly,
+    GenericController.createOne(dbtable, dbcols))
+
+  .patch("/:id", 
+    AuthMiddleware.authenticate, 
+    AuthMiddleware.userOwnership("id"),
+    GenericController.patchOne(dbtable, dbcols))
