@@ -1,0 +1,25 @@
+info:
+  name: publicador - disable
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{url}}/2/publicador/{{user-id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "campus_id": "{{last_created_campus_id}}",
+        "email": "teste@teste.com",
+        "nome": "Daniel de Andrade Varela",
+        "telefone": "47555555",
+        "descricao": "..."
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

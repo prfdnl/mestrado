@@ -1,0 +1,33 @@
+info:
+  name: instituicao - campus - create
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{url}}/2/instituicao/{{last_created_instituicao_id}}/campus"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Instituto Federal Catarinense",
+        "sigla": "IFC-Cam",
+        "cnpj": "...",
+        "email": "teste@teste.com",
+        "telefone": "...",
+        "endereco": "..."
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        const body = res.getBody();
+        bru.setEnvVar("last_created_campus_id", body.id);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

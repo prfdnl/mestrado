@@ -1,0 +1,21 @@
+info:
+  name: instituicao - update
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{url}}/2/instituicao/{{last_created_instituicao_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Instituto Federal Catarinense ...2"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

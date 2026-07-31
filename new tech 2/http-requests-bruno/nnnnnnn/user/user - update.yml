@@ -1,0 +1,22 @@
+info:
+  name: user - update
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{url}}/2/user/{{last_created_user_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "username": "admin zika",
+        "password": "admin"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
