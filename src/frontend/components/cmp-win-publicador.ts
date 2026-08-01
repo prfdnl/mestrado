@@ -17,12 +17,14 @@ const html =  /*html*/`
   <div class="card">
     <h2>Publicação</h2>
     <div class="publicacao-area"></div>
+    <button class="btn-add">Adicionar Publicação</button>
   </div>
 `
 
 export class CmpWinPublicador extends HTMLElement {
   connectedCallback() {
     this.innerHTML = html;
+    this.#attachAddCampusListener()
     if (this.getAttribute('data-user')) {
       this.#userInit()
     } else {
@@ -81,6 +83,21 @@ export class CmpWinPublicador extends HTMLElement {
     })
   }
 
+  #attachAddCampusListener() {
+    this.querySelector('.btn-add')?.addEventListener('click', async (e) => {
+      e.preventDefault()
+      const publicadorArea = this.querySelector('.publicador-area > *') as any
+      const values = publicadorArea?.values
+      if (!values?.id) {
+        alert('Selecione um publicador antes de adicionar uma publicação.')
+        return
+      }
+      const publicacaoArea = this.querySelector('.publicacao-area') as HTMLElement
+      const newPublicacaoForm = new CmpFormPublicacao()
+      publicacaoArea.appendChild(newPublicacaoForm)
+      newPublicacaoForm.populate({ user_id: values.id })
+    })
+  }
 }
 
 customElements.define('cmp-win-publicador', CmpWinPublicador)

@@ -17,13 +17,14 @@ const html =  /*html*/`
   <div class="card">
     <h2>Campus</h2>
     <div class="campus-area"></div>
-    <button>Adicionar Campus</button>
+    <button class="btn-add">Adicionar Campus</button>
   </div>
 `
 
 export class CmpWinInstituicao extends HTMLElement {
   connectedCallback() {
     this.innerHTML = html;
+    this.#attachAddCampusListener()
     this.#init()
   }
 
@@ -63,6 +64,22 @@ export class CmpWinInstituicao extends HTMLElement {
       campusArea.appendChild(campusForm)
       campusForm.populate(campus)
     })
+  }
+
+  #attachAddCampusListener() {
+    this.querySelector('.btn-add')?.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const instituicaoArea = this.querySelector('.instituicao-area > *') as CmpFormInstituicao
+      const values = instituicaoArea?.values
+      if (!values?.id) {
+        alert('Selecione uma instituição antes de adicionar um campus.')
+        return
+      }
+      const campusArea = this.querySelector('.campus-area') as HTMLElement
+      const newCampusForm = new CmpFormCampus()
+      campusArea.appendChild(newCampusForm)
+      newCampusForm.populate({ instituicao_id: values.id })
+    });
   }
 }
 

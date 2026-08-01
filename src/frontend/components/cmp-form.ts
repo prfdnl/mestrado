@@ -10,7 +10,7 @@ export class CmpForm extends HTMLElement {
     this.#html = html
     this.#apiRoute = apiRoute
   }
-  
+
   connectedCallback() {
     this.#root.innerHTML = this.#html;
     if (this.#data)
@@ -37,12 +37,8 @@ export class CmpForm extends HTMLElement {
     if (!form) return;
     saveButton.addEventListener('click', async (e) => {
       e.preventDefault();
-      const data: any = {};
-      const formData = new FormData(form);
+      const { id, data } = this.values!; 
       if (fieldset) fieldset.disabled = true;
-      formData.forEach((value, key) => data[key] = value);
-      const id = data.id;
-      delete data.id;
       // Create
       if (!id) {
         const response = await fetch(`${this.#apiRoute}`, {
@@ -52,14 +48,14 @@ export class CmpForm extends HTMLElement {
         });
         if (!response.ok) {
           const result = await response.json();
-          if (result?.errors) 
+          if (result?.errors)
             alert(result.errors);
           console.error('Failed to create institution:', response.statusText);
           if (fieldset) fieldset.disabled = false;
           return;
         }
         const result = await response.json();
-        this.populate(result);        
+        this.populate(result);
         if (fieldset) fieldset.disabled = false;
         return
       }
@@ -71,7 +67,7 @@ export class CmpForm extends HTMLElement {
       });
       if (!response.ok) {
         const result = await response.json();
-        if (result?.errors) 
+        if (result?.errors)
           alert(result.errors);
         console.error('Failed to update institution:', response.statusText);
         if (fieldset) fieldset.disabled = false;
@@ -92,8 +88,7 @@ export class CmpForm extends HTMLElement {
     deleteButton.addEventListener('click', async (e) => {
       e.preventDefault();
       const confirmDelete = confirm('Tem certeza que deseja excluir esta instituição?');
-      if (!confirmDelete) return;      
-
+      if (!confirmDelete) return;
       if (fieldset) fieldset.disabled = true;
       const id = (form.querySelector('#id') as HTMLInputElement)?.value;
       if (!id) {
@@ -106,7 +101,7 @@ export class CmpForm extends HTMLElement {
       });
       if (!response.ok) {
         const result = await response.json();
-        if (result?.errors) 
+        if (result?.errors)
           alert(result.errors);
         console.error('Failed to delete institution:', response.statusText);
         if (fieldset) fieldset.disabled = false;
@@ -117,14 +112,14 @@ export class CmpForm extends HTMLElement {
   }
 
   async loadFormId(id: string) {
-    const response = await fetch(`${this.#apiRoute}/${id}`, { 
-      headers: { 'Authorization': 'Bearer ' + globalThis.user.token } 
+    const response = await fetch(`${this.#apiRoute}/${id}`, {
+      headers: { 'Authorization': 'Bearer ' + globalThis.user.token }
     })
     if (!response.ok) {
       console.error(`Failed to load form with id ${id}:`, response.statusText);
       return;
     }
-    this.#data = await response.json(); 
+    this.#data = await response.json();
   }
 
   populate(data: any) {
@@ -136,6 +131,17 @@ export class CmpForm extends HTMLElement {
         input.value = data[key];
       }
     }
+  }
+
+  get values() {
+    const form = this.#root.querySelector('form') as HTMLFormElement;
+    if (!form) return null;
+    const data: any = {};
+    const formData = new FormData(form);
+    formData.forEach((value, key) => data[key] = value);
+    const id = data.id;
+    delete data.id;
+    return { id, data };
   }
 }
 

@@ -50,7 +50,7 @@ CREATE TABLE "user" (
 INSERT INTO "user" (username, password_hash, roles, active) VALUES (
   'admin', 
   '$argon2id$v=19$m=65536,p=2,t=3$pkLXYcAmdkgoMguxlTi04w$3ub93nO8CU9CghzvO/o7RT9tOi0orKUqjGXEgOlNryY', 
-  ARRAY['admin'], 
+  ARRAY['admin','publisher'], 
   TRUE
 );
 

@@ -41,7 +41,7 @@ class C extends HTMLElement {
 
     this.#attachSearchHandler()
     this.#attachOnChangePill()
-    this.#createPill('','Nova Instituição', 'keep')
+    this.#createPill('','novo', 'keep')
   }
 
   #attachSearchHandler() {
