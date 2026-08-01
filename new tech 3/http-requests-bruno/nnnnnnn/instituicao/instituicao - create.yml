@@ -1,0 +1,33 @@
+info:
+  name: instituicao - create
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url}}/instituicao"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Instituto Federal Catarinense ...",
+        "sigla": "IFC ...",
+        "cnpj": "...",
+        "email": "teste@teste.com",
+        "telefone": "...",
+        "endereco": "..."
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        const body = res.getBody();
+        bru.setEnvVar("last_created_instituicao_id", body.id);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

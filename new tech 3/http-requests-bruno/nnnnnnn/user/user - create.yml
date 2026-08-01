@@ -1,0 +1,29 @@
+info:
+  name: user - create
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url}}/user"
+  body:
+    type: json
+    data: |-
+      {
+        "username": "admin",
+        "password": "admin"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        const body = res.getBody();
+        bru.setEnvVar("last_created_user_id", body.id);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

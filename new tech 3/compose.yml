@@ -1,0 +1,54 @@
+name: mestrado
+
+services:
+  
+  # --------------------------------------------------------------------------------------
+  # --- Postgres                                                                       ---
+  # --------------------------------------------------------------------------------------
+
+  postgres:
+    container_name: 
+      postgres
+    image: 
+      docker.io/postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+    volumes:
+      - ./.data/postgres_data:/var/lib/postgresql:Z,U
+
+  # --------------------------------------------------------------------------------------
+  # --- ADMINER                                                                        ---
+  # --------------------------------------------------------------------------------------
+
+  adminer:    
+    image: docker.io/adminer:latest
+    container_name: adminer
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    ports:
+      - "5050:8080"
+    depends_on:
+      - postgres
+    volumes:
+      - ./.data/adminer_data:/var/lib/adminer:Z,U
+
+  # --------------------------------------------------------------------------------------
+  # --- ELASTIC SEARCH                                                                 ---
+  # --------------------------------------------------------------------------------------
+
+  elasticsearch:
+    image: docker.io/elasticsearch:9.1.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./.data/elasticsearch:/usr/share/elasticsearch/data:Z,U

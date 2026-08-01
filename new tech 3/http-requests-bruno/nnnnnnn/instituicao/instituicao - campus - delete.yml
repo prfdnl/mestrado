@@ -1,0 +1,15 @@
+info:
+  name: instituicao - campus - delete
+  type: http
+  seq: 8
+
+http:
+  method: DELETE
+  url: "{{url}}/campus/{{last_created_campus_id}}"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

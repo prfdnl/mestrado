@@ -41,6 +41,7 @@ CREATE TABLE "user" (
   "email"         VARCHAR(255) NULL,
   "telefone"      VARCHAR(20) NULL,
   "descricao"     TEXT NULL,
+  "delete_at"     
 
   "created_at"    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   "updated_at"    TIMESTAMPTZ NOT NULL DEFAULT NOW()

@@ -1,0 +1,27 @@
+name: development
+variables:
+  - name: url
+    value: http://localhost:3000/api
+  - name: token
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMTlmYjNiMS1lODU0LTc2ODAtYjhjYy1iOTAyMDI0MmFkYWQiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiYWRtaW4iLCJ1c2VyIl0sImV4cCI6MTc4NTQzNjI0Nn0.SaF7TOY1B9fYbl0thlyUjDB8v3i3w-w7y44F75CG0d0
+  - name: user-id
+    value: 019fb941-ac67-70dc-84e5-df3909b8eb14
+  - name: user-roles
+    value:
+      type: object
+      data: |-
+        [
+          "admin"
+        ]
+  - name: username
+    value: admin
+  - name: instituicao_id
+    value: 019fb72f-3b98-7eee-9312-21066e087526
+  - name: last_created_instituicao_id
+    value: 019fbaac-c13e-79f3-a97b-d9af79b0f4a8
+  - name: last_created_user_id
+    value: 019fb8f1-4ec9-7d7d-9385-e627149fd1d3
+  - name: access_token
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOWZiOTQxLWFjNjctNzBkYy04NGU1LWRmMzkwOWI4ZWIxNCIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlcyI6WyJhZG1pbiJdLCJleHAiOjI2NzgzMjU1ODM1fQ.mo1D3J_b4P-4VHetwuByBu9IH2luTgB3BE5s0kmfPUA
+  - name: last_created_campus_id
+    value: 019fbab5-415c-7214-bf2e-bc96e6ebbdb7

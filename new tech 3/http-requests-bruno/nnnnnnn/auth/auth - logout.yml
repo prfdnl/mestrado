@@ -1,0 +1,27 @@
+info:
+  name: auth - logout
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{url}}/logout"
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        bru.setEnvVar("access_token", "...");
+        bru.setEnvVar("user-id", "...");
+        bru.setEnvVar("user-roles", "...");
+        bru.setEnvVar("username", "...");
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
