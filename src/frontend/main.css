@@ -1,5 +1,123 @@
-.card {
-  border: 1px solid #ccc;
-  margin: 10px;
-  padding: 10px;
+body {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 50px 1fr;
+  grid-template-areas:
+    "aside header"
+    "aside main";
+  background-color: var(--background-color);
+}
+
+header {
+  grid-area: header;
+}
+
+main {
+  grid-area: main;
+  background-color: var(--secundary-background-color);
+  border-radius: 3rem 0 0 0;
+  padding: 3rem;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+button.card {
+  max-width: 250px;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+aside {
+  > .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: var(--border);
+    margin-bottom: 1rem;
+
+    img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      margin: 0.5rem 0 0.25rem 0;
+      font-size: 1.2rem;
+      color: var(--text-color);
+    }
+
+    span {
+      font-size: 0.9rem;
+      color: var(--text-color-secondary);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+aside {
+  grid-area: aside;
+  background-color: var(--primary-background-color);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+aside .menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+aside .menu .group {
+  display: flex;
+  flex-direction: column;
+}
+
+aside .menu .group > span {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted-color, #888);
+  cursor: default;
+  user-select: none;
+}
+
+aside .menu .group .items {
+  display: flex;
+  flex-direction: column;
+}
+
+aside .menu .group .items a {
+  padding: 0.5rem 1.5rem 0.5rem 2rem;
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+aside .menu .group .items a:hover {
+  background-color: var(--secundary-background-color);
+  border-left-color: var(--accent-color, #666);
+  color: var(--accent-color, #333);
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+.home {
+  .founded {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
 }

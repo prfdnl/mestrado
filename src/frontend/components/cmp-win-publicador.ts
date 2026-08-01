@@ -4,20 +4,28 @@ import { CmpFormPublicacao } from './cmp-form-publicacao'
 import './cmp-search'
 
 const html =  /*html*/`
-  <div class="card admin">
-    <h2>Administração</h2>
-    <cmp-search data-search-fetch="publicador" data-label="nome"></cmp-search>
-  </div>
+  <div>
+    <div class="admin">
+      <h2>Administração</h2>
+      <div class="card-holder">
+        <div class="card">
+          <cmp-search data-search-fetch="publicador" data-label="nome"></cmp-search>
+        </div>
+      </div>
+    </div>
 
-  <div class="card">
     <h2>Publicador</h2>
-    <div class="publicador-area"></div>
-  </div>
+    <div class="card-holder">
+      <div class="card">
+        <div class="publicador-area"></div>
+      </div>
+    </div>
 
-  <div class="card">
-    <h2>Publicação</h2>
-    <div class="publicacao-area"></div>
-    <button class="btn-add">Adicionar Publicação</button>
+    <h2>Publicações</h2>
+    <div class="card-holder">
+      <div class="holder publicacao-area"></div>
+      <button class="card btn-add">Adicionar Publicação</button>
+    </div>
   </div>
 `
 
@@ -34,7 +42,7 @@ export class CmpWinPublicador extends HTMLElement {
 
   async #userInit() {
     const publicadorArea = this.querySelector('.publicador-area') as HTMLElement
-    const adminCard = this.querySelector('.card.admin') as HTMLElement
+    const adminCard = this.querySelector('.admin') as HTMLElement
     adminCard?.remove()
     if (!publicadorArea) return
     const form = new CmpFormPublicador()
@@ -53,7 +61,7 @@ export class CmpWinPublicador extends HTMLElement {
       const form = new CmpFormPublicador()
       if (publicadorId)
         await form.loadFormId(publicadorId)
-      publicadorArea.innerHTML = ''
+      this.#clear()
       publicadorArea.appendChild(form)
       this.#loadPublicacao(publicadorId)
     })
@@ -62,7 +70,6 @@ export class CmpWinPublicador extends HTMLElement {
   async #loadPublicacao(publicadorId: string) {
     const publicacaoArea = this.querySelector('.publicacao-area') as HTMLElement
     if (!publicacaoArea) return
-    publicacaoArea.innerHTML = ''
     if (!publicadorId) return
     const response = await fetch(`/api/publicador/${publicadorId}/publicacao`, {
       headers: { 'Authorization': `Bearer ${globalThis.user.token}` }
@@ -80,6 +87,7 @@ export class CmpWinPublicador extends HTMLElement {
       const publicacaoForm = new CmpFormPublicacao()
       publicacaoArea.appendChild(publicacaoForm)
       publicacaoForm.populate(publicacao)
+      publicacaoForm.classList.add('card')
     })
   }
 
@@ -96,7 +104,15 @@ export class CmpWinPublicador extends HTMLElement {
       const newPublicacaoForm = new CmpFormPublicacao()
       publicacaoArea.appendChild(newPublicacaoForm)
       newPublicacaoForm.populate({ user_id: values.id })
+      newPublicacaoForm.classList.add('card')
     })
+  }
+
+  #clear() {
+    const publicadorArea = this.querySelector('.publicador-area') as HTMLElement
+    const publicacaoArea = this.querySelector('.publicacao-area') as HTMLElement
+    if (publicadorArea) publicadorArea.innerHTML = ''
+    if (publicacaoArea) publicacaoArea.innerHTML = ''
   }
 }
 

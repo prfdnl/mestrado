@@ -34,11 +34,9 @@ class C extends HTMLElement {
       pillsContainer: root.querySelector('.pills') as HTMLDivElement,
       pillTemplate  : root.querySelector('.pills template') as HTMLTemplateElement,
     }
-
     const name = this.getAttribute('name')
     if (name)
       this.#els.pillTemplate.content.querySelector('[type="radio"]')?.setAttribute('name', `${name}`);
-
     this.#attachSearchHandler()
     this.#attachOnChangePill()
     this.#createPill('','novo', 'keep')

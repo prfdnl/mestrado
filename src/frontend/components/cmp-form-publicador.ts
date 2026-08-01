@@ -27,7 +27,7 @@ const html =  /*html*/`
           <input type="text" id="descricao" name="descricao" required>
         </div>
       </form>
-      <div class="form-group">
+      <div class="form-group actions">
         <button type="button" class="btn-delete">excluir</button>
         <button type="button" class="btn-save">Salvar</button>
       </div>

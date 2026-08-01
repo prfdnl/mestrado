@@ -29,7 +29,7 @@ const html = /*html*/`
         <label for="data">Data</label>
         <input type="date" id="data" name="data" required>
       </div>
-      <div class="form-group">
+      <div class="form-group actions">
         <button type="button" class="btn-delete">excluir</button>
         <button type="button" class="btn-save">Salvar</button>
       </div>

@@ -1,9 +1,7 @@
+import './theme.css'
 import './main.css'
 import './components/cmp-login'
-
-import { CmpFormInstituicao } from './components/cmp-form-instituicao'
-import { CmpFormCampus } from './components/cmp-form-campus'
-
+import './components/cmp-win-home'
 import './components/cmp-win-publicador'
 import './components/cmp-win-instiuicao'
 
@@ -38,11 +36,7 @@ const main = document.querySelector('main') as HTMLElement
 
 {
   const routes: Record<string, () => HTMLElement | Promise<HTMLElement>> = {}
-  routes['/'] =  () => {
-    const el = document.createElement('div')
-    el.textContent = 'nada feito ainda'
-    return el
-  }
+  routes['/'] =  () => document.createElement('cmp-win-home')
   routes['/login'] = () => document.createElement('cmp-login')
 
   if (globalThis.user.roles.includes('admin')) {

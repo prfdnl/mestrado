@@ -28,7 +28,7 @@ const html =  /*html*/`
         <label for="telefone">Telefone</label>
         <input type="text" id="telefone" name="telefone" required>
       </div>
-      <div class="form-group">
+      <div class="form-group actions">
         <button type="button" class="btn-delete">excluir</button>
         <button type="button" class="btn-save">Salvar</button>
       </div>

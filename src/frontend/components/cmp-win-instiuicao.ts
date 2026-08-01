@@ -4,20 +4,28 @@ import { CmpFormCampus } from './cmp-form-campus'
 import './cmp-search'
 
 const html =  /*html*/`
-  <div class="card">
-    <h2>Administração</h2>
-    <cmp-search data-search-fetch="instituicao" data-label="nome"></cmp-search>
-  </div>
+  <div>
+    <div class="admin">
+      <h2>Administração</h2>
+      <div class="card-holder">
+        <div class="card">
+          <cmp-search data-search-fetch="instituicao" data-label="nome"></cmp-search>
+        </div>
+      </div>
+    </div>
 
-  <div class="card">
     <h2>Instituição</h2>
-    <div class="instituicao-area"></div>
-  </div>
+    <div class="card-holder">
+      <div class="card">
+        <div class="instituicao-area"></div>
+      </div>
+    </div>
 
-  <div class="card">
     <h2>Campus</h2>
-    <div class="campus-area"></div>
-    <button class="btn-add">Adicionar Campus</button>
+    <div class="card-holder">
+      <div class="holder campus-area"></div>
+      <button class="card btn-add">Adicionar Campus</button>
+    </div>
   </div>
 `
 
@@ -37,7 +45,7 @@ export class CmpWinInstituicao extends HTMLElement {
       const form = new CmpFormInstituicao()
       if (instituicaoId) 
         await form.loadFormId(instituicaoId)
-      instituicaoArea.innerHTML = ''
+      this.#clear()
       instituicaoArea.appendChild(form)
       this.#loadCampus(instituicaoId)
     })
@@ -46,7 +54,6 @@ export class CmpWinInstituicao extends HTMLElement {
   async #loadCampus(instituicaoId: string) {
     const campusArea = this.querySelector('.campus-area') as HTMLElement
     if (!instituicaoId || !campusArea) return
-    campusArea.innerHTML = ''
     const response = await fetch(`/api/instituicao/${instituicaoId}/campus`, {
       headers: { 'Authorization': `Bearer ${globalThis.user.token}` }
     })
@@ -62,6 +69,7 @@ export class CmpWinInstituicao extends HTMLElement {
     campusData.forEach((campus: any) => {
       const campusForm = new CmpFormCampus()
       campusArea.appendChild(campusForm)
+      campusForm.classList.add('card')
       campusForm.populate(campus)
     })
   }
@@ -78,8 +86,16 @@ export class CmpWinInstituicao extends HTMLElement {
       const campusArea = this.querySelector('.campus-area') as HTMLElement
       const newCampusForm = new CmpFormCampus()
       campusArea.appendChild(newCampusForm)
+      newCampusForm.classList.add('card')
       newCampusForm.populate({ instituicao_id: values.id })
     });
+  }
+
+  #clear() {
+    const instituicaoArea = this.querySelector('.instituicao-area') as HTMLElement
+    const campusArea = this.querySelector('.campus-area') as HTMLElement
+    if (instituicaoArea) instituicaoArea.innerHTML = ''
+    if (campusArea) campusArea.innerHTML = ''
   }
 }
 
