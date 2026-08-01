@@ -10,18 +10,6 @@ const html = /*html*/`
         <input type="text" id="titulo" name="titulo" required>
       </div>
       <div class="form-group">
-        <label for="tipo">Tipo</label>
-        <input type="text" id="tipo" name="tipo" required>
-      </div>
-      <div class="form-group">
-        <label for="resumo">Resumo</label>
-        <textarea id="resumo" name="resumo" rows="3" required></textarea>
-      </div>
-      <div class="form-group">
-        <label for="transcricao">Transcrição</label>
-        <textarea id="transcricao" name="transcricao" rows="8" required></textarea>
-      </div>
-      <div class="form-group">
         <label for="link">Link</label>
         <input type="text" id="link" name="link" required>
       </div>

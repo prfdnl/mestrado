@@ -57,14 +57,15 @@ INSERT INTO "user" (username, password_hash, roles, active) VALUES (
 --- PUBLICAÇÃO ---------------------------------------------------------------------------------------------------------
 
 CREATE TABLE "publicacao" (
-  "id"          UUID PRIMARY KEY DEFAULT uuidv7(),
-  "user_id"     UUID REFERENCES "user"(id) ON DELETE CASCADE,
-  "titulo"      VARCHAR(255) NOT NULL,
-  "tipo"        VARCHAR(50) NOT NULL,
-  "resumo"      TEXT NOT NULL,
-  "transcricao" TEXT NOT NULL,
-  "link"        VARCHAR(255) NOT NULL,
-  "data"        DATE NOT NULL,
-  "created_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  "updated_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  "id"             UUID PRIMARY KEY DEFAULT uuidv7(),
+  "user_id"        UUID REFERENCES "user"(id) ON DELETE CASCADE,
+  "titulo"         VARCHAR(255) NOT NULL,
+  "tipo"           VARCHAR(50),
+  "resumo"         TEXT,
+  "transcricao"    TEXT,
+  "link"           VARCHAR(255) NOT NULL,
+  "data"           DATE,
+  "processamento"  BOOLEAN NOT NULL DEFAULT TRUE,
+  "created_at"     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  "updated_at"     TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

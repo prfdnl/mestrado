@@ -250,36 +250,43 @@ export default new Hono()
     InputMiddleware.jsonBodyValidate(type({
       user_id    : "string.uuid",
       titulo     : "string",
-      tipo       : "string",
-      transcricao: "string",
-      resumo     : "string",
+      // tipo       : "string",
+      // transcricao: "string",
+      // resumo     : "string",
+      analise    : "string",
       link       : "string.url",
       data       : "string.date"
     })),
     DatabaseMiddleware.inputBodyOnly,
     DatabaseMiddleware.insert({ table: "publicacao", returning: ["id", "user_id", "id", "user_id", "titulo", "tipo", "resumo", "transcricao", "link", "data"] }),
     DatabaseMiddleware.index({ index: "publicacao", id: "id" }),
+
+    async (c, next) => {
+      
+      return await next()
+    },
+
     c => c.json(c.get<any>("databaseResult"))
   )
 
-  .patch("/publicacao/:id",
-    AuthMiddleware.authenticate,
-    InputMiddleware.jsonBodyParse,
-    InputMiddleware.jsonBodyValidate(type({
-      "user_id?"    : "string.uuid",
-      "titulo?"     : "string",
-      "tipo?"       : "string",
-      "transcricao?": "string",
-      "resumo?"     : "string",
-      "link?"       : "string.url",
-      "data?"       : "string.date"
-    })),
-    InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
-    DatabaseMiddleware.inputMergeParamsAndBody,
-    DatabaseMiddleware.patch({ table: "publicacao", returning: ["id", "user_id", "titulo", "tipo", "transcricao", "resumo", "link"], where: ["id"] }),
-    DatabaseMiddleware.indexUpdate({ index: "publicacao", id: "id" }),
-    c => c.json(c.get<any>("databaseResult"))
-  )
+  // .patch("/publicacao/:id",
+  //   AuthMiddleware.authenticate,
+  //   InputMiddleware.jsonBodyParse,
+  //   InputMiddleware.jsonBodyValidate(type({
+  //     "user_id?"    : "string.uuid",
+  //     "titulo?"     : "string",
+  //     "tipo?"       : "string",
+  //     "transcricao?": "string",
+  //     "resumo?"     : "string",
+  //     "link?"       : "string.url",
+  //     "data?"       : "string.date"
+  //   })),
+  //   InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
+  //   DatabaseMiddleware.inputMergeParamsAndBody,
+  //   DatabaseMiddleware.patch({ table: "publicacao", returning: ["id", "user_id", "titulo", "tipo", "transcricao", "resumo", "link"], where: ["id"] }),
+  //   DatabaseMiddleware.indexUpdate({ index: "publicacao", id: "id" }),
+  //   c => c.json(c.get<any>("databaseResult"))
+  // )
 
   .delete("/publicacao/:id",
     AuthMiddleware.authenticate,

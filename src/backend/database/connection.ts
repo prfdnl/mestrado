@@ -1,5 +1,5 @@
 import { SQL } from "bun";
-const HOST = 'localhost'
+const HOST = 'postgres'
 const PORT = 5432
 const USER = 'postgres'
 const DATABASE = 'postgres'

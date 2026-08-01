@@ -22,6 +22,10 @@ const html =  /*html*/`
     </div>
 
     <h2>Publicações</h2>
+    <span class="info">
+      As publicações serão avaliadas por um agente de IA, com isso serão criados resumos e transcrições automáticas, 
+      isso pode levar alguns minutos, então aguarde a conclusão do processo antes de tentar acessar a publicação.
+    </span>
     <div class="card-holder">
       <div class="holder publicacao-area"></div>
       <button class="card btn-add">Adicionar Publicação</button>
