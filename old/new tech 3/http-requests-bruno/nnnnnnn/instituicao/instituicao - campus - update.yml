@@ -1,0 +1,21 @@
+info:
+  name: instituicao - campus - update
+  type: http
+  seq: 7
+
+http:
+  method: PATCH
+  url: "{{url}}/campus/{{last_created_campus_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "sigla": "IFC-Cam"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

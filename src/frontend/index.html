@@ -1,29 +1,47 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='pt-BR'>
 <head>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <title>Page Title</title>
-  <script type="module" src="main.ts"></script>
+  <script type='module' src='main.ts'></script>
+  <title>Sistema</title>
 </head>
 <body>
-  
+   
   <header>
-    <iconify-icon icon="mdi:home"></iconify-icon>
-    <input type="radio" name="__theme" value="light" id="light">
-    <input type="radio" name="__theme" value="dark" id="dark">
+    ...
   </header>
-  
+
   <aside>
-    <div class="profile">
-      <img src="https://avatars.githubusercontent.com/u/1902294?v=4" alt="Profile Picture">
-      <h2>Nome do Usuário</h2>
-      <span>Administrador</span>
+    <div class="group" data-role="admin">
+      <span>Admin</span>
+      <div class="items">
+        <a href="/instituicoes">Instituições</a>
+        <a href="/publicadores">Publicadores</a>
+        <a href="/">...</a>
+      </div>
+    </div>
+    <div class="group" data-role="publisher">
+      <span>Publicador</span>
+      <div class="items">
+        <a href="/publicador">Publicador e Publicações</a>
+      </div>
+    </div>
+    <div class="group">
+      <span>User</span>
+      <div class="items">
+        <a href="/">...</a>
+      </div>
     </div>
   </aside>
-
+  
   <main>
-    <x-cadastro-instituicao></x-cadastro-instituicao>
+    ...
   </main>
+
+  <footer>
+
+  </footer>
+
 </body>
 </html>

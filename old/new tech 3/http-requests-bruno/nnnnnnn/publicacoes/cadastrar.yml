@@ -1,0 +1,34 @@
+info:
+  name: cadastrar
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url}}/publicacao"
+  body:
+    type: json
+    data: |-
+      {
+        "user_id": "{{user-id}}",
+        "tipo": "video",
+        "titulo": "teste",
+        "transcricao": "asd",
+        "resumo": "asd",
+        "link": "http://asdasd.com",
+        "data": "2018/12/12"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        const body = res.getBody();
+        bru.setEnvVar("last_created_publicacao_id", body.id);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

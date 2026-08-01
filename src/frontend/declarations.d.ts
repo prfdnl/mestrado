@@ -1,12 +1,17 @@
-// globalThis userdata
-declare var userdata: { name:string, id: number, roles?: string[] } | null;
-
-declare module '*.css' {
-  const content: { [className: string]: string };
+declare module "*.html" {
+  const content: string;
   export default content;
 }
 
-declare module '*.html' {
+declare module "*.css" {
   const content: string;
   export default content;
+}
+
+// globalThis user
+declare var user: {
+  token   : string;
+  id      : string;
+  username: string;
+  roles   : string[];
 }

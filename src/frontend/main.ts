@@ -1,57 +1,80 @@
-import 'iconify-icon'
-import './theme.css'
 import './main.css'
-import { MenuWebComponent } from "./components/menu"
-import { CadastroInstituicaoWebComponent } from './components/cadastro-instituicao'
-import { CadastroPublicadorWebComponent } from './components/cadastro-publicador'
+import './components/cmp-login'
 
-// Register custom elements
-customElements.define("x-menu", MenuWebComponent)
-customElements.define("x-cadastro-instituicao", CadastroInstituicaoWebComponent)
-customElements.define("x-cadastro-publicador", CadastroPublicadorWebComponent)
+import { CmpFormInstituicao } from './components/cmp-form-instituicao'
+import { CmpFormCampus } from './components/cmp-form-campus'
 
-// Get logued user token
-globalThis.userdata = await async function () {
-  const response = await fetch('/api/auth/refresh', { credentials: 'include' }) 
+import './components/cmp-win-publicador'
+import './components/cmp-win-instiuicao'
+
+const main = document.querySelector('main') as HTMLElement
+
+// --- ROLES_LOAD ------------------------------------------------------------------------------------------------------
+
+{
+  const response = await fetch('/api/refresh-token', { credentials: 'include' })
   const data = await response.json()
-  if (!response.ok) return null
-  return data.payload as { name: string, id: number, permissions?: string[] }
-}();
 
-//
-const aside = document.querySelector('aside') as HTMLElement;
-const menu = document.createElement('x-menu') as MenuWebComponent;
-aside.appendChild(menu);
-
-// Routes
-const main = document.querySelector('main') as HTMLElement;
-const routes: Record<string, () => void> = {
-  '/'               : () => main.innerHTML = '<h1>Bem-vindo!</h1>',
-  '/cad-instituicao': () => main.innerHTML = '<x-cadastro-instituicao></x-cadastro-instituicao>',
-  '/cad-publicador' : () => main.innerHTML = '<x-cadastro-publicador></x-cadastro-publicador>',
-};
-
-// Fn Route
-const route = (path: string) => {
-  const handler = routes[path];
-  if (handler) return handler()
-  main.innerHTML = '<h1>404 - Página não encontrada</h1>';
+  globalThis.user = {
+    token   : data?.token             || '',
+    id      : data?.payload?.id       || '',
+    username: data?.payload?.username || '',
+    roles   : data?.payload?.roles    || [],
+  }
 }
-  
-// load correct page based on current URL
-const url = new URL(window.location.href);
-const path = url.pathname;
-route(path);
 
-// handle link changes from menu component
-window.addEventListener('menu-link-changed', (event) => {
-  const link = (event as CustomEvent).detail.link;
-  route(link);
-});
+// --- REMOVE ROLES ----------------------------------------------------------------------------------------------------
 
-// handle browser back/forward navigation
-window.addEventListener('popstate', () => {
-  const url = new URL(window.location.href);
-  const path = url.pathname;
-  route(path);
-});
+{
+  document.querySelectorAll('[data-role]').forEach(el => {
+    const val = el.getAttribute('data-role')
+    if (!val) return
+    if (!globalThis.user.roles.includes(val))
+      el.remove()
+  })
+}
+
+// --- COMPONENT ROUTER ------------------------------------------------------------------------------------------------
+
+{
+  const routes: Record<string, () => HTMLElement | Promise<HTMLElement>> = {}
+  routes['/'] =  () => {
+    const el = document.createElement('div')
+    el.textContent = 'nada feito ainda'
+    return el
+  }
+  routes['/login'] = () => document.createElement('cmp-login')
+
+  if (globalThis.user.roles.includes('admin')) {
+    routes['/publicadores'] = () => document.createElement('cmp-win-publicador')
+    routes['/instituicoes'] = () => document.createElement('cmp-win-instituicao')
+  }
+
+  if (globalThis.user.roles.includes('publisher')) {
+    routes['/publicador'] = async () => {
+      const el = document.createElement('cmp-win-publicador')
+      el.setAttribute('data-user', 'user')
+      return el
+    }
+  }
+
+  async function routeGo(e?: Event) {
+    const path = window.location.pathname;
+    if (routes[path]) {
+      main.innerHTML = '';
+      const el = await routes[path]();
+      main.appendChild(el)
+      return 
+    }
+    main.innerHTML = `<h1>404 - Page Not Found</h1><p>The page "${path}" does not exist.</p>`;
+    if (e?.type === 'popstate') return;
+    window.history.pushState({}, '', path);
+  }
+
+  window.addEventListener('popstate', e => {
+    e.preventDefault()
+    routeGo()
+  })
+
+  routeGo()
+}

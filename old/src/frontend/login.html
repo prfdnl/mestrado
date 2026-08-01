@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Login</title>
+  <link rel='stylesheet' href='main.css'>
+</head>
+<body>
+  <main>
+    <h1>Login</h1>
+    <div class="card">
+      <form>    
+        <label>
+          <span>login</span>
+          <input type="text" value="John Doe">
+        </label>    
+        <label>
+          <span>password</span>
+          <input type="password" value="password123">
+        </label>
+        <button type="submit">
+          Login
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script type='module'>
+    const form = document.querySelector('form')
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      const name = form.querySelector('input[type="text"]').value
+      const password = form.querySelector('input[type="password"]').value
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, password })
+      })
+      if (response.ok) {
+        const data = await response.json()
+        window.location.href = '/'
+      } else {
+        const error = await response.text()
+        alert(`Login failed: ${error}`)
+      }
+    })
+  </script>
+</body>
+</html>

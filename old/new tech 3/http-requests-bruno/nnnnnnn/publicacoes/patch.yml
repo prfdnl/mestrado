@@ -1,0 +1,27 @@
+info:
+  name: patch
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{url}}/publicacao"
+  body:
+    type: json
+    data: |-
+      {
+        "user_id": "{{user-id}}",
+        "tipo": "video",
+        "titulo": "teste",
+        "transcricao": "asd",
+        "resumo": "asd",
+        "link": "http://asdasd.com",
+        "data": "2018/12/12"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

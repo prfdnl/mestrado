@@ -1,20 +1,14 @@
-import frontend from "./frontend/index.html"
-import frontendLogin from "./frontend/login.html"
-import { Hono } from "hono"
+import backendRoutes from "./backend/routes/routes"
 
-// BACKEND ROUTES
-import routes from "./backend/3.routes/index.ts"
-const app = new Hono()
-app.route("/api", routes)
+import index from "./frontend/index.html"
+import login from "./frontend/login.html"
 
-// SERVER
-const { protocol, hostname, port } = Bun.serve({
-  routes: { 
-    "/api/*": app.fetch,
-    "/login": frontendLogin,
-    "/*": frontend
-  },
+const { url } = Bun.serve({
+  routes: {
+    "/api/*": backendRoutes.fetch,
+    "/login": login,
+    "/*": index
+  }
 })
 
-// THE USER MUST BE INFORMED…
-console.log(`Server running at ${protocol}//${hostname}:${port}`)
+console.log(`Server started on ${url}`)

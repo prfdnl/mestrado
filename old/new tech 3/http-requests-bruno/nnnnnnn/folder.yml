@@ -1,0 +1,10 @@
+info:
+  name: nnnnnnn
+  type: folder
+  seq: 1
+
+request:
+  headers:
+    - name: Authorization
+      value: Bearer {{access_token}}
+  auth: inherit
