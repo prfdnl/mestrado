@@ -51,7 +51,11 @@ const main = document.querySelector('main') as HTMLElement
   }
 
   if (globalThis.user.roles.includes('publisher')) {
-    routes['/publicador'] = async () => document.createElement('cmp-win-publicador')
+    routes['/publicador'] = async () => {
+      const el = document.createElement('cmp-win-publicador')
+      el.setAttribute('data-user', 'user')
+      return el
+    }
   }
 
   async function routeGo(e?: Event) {

@@ -23,7 +23,7 @@ export default new Hono()
   .patch('/user/:id',
     AuthController.isAdmin,
     InputMiddleware.jsonBodyParse,
-    InputMiddleware.jsonBodyValidate(type({ "username?" : "string", "password?" : "string" })),
+    InputMiddleware.jsonBodyValidate(type({ "username?": "string", "password?": "string" })),
     InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
     DatabaseMiddleware.inputMergeParamsAndBody,
     DatabaseMiddleware.inputPasswordToPasswordHash,
@@ -56,13 +56,13 @@ export default new Hono()
   .post("/instituicao",
     AuthController.isAdmin,
     InputMiddleware.jsonBodyParse,
-    InputMiddleware.jsonBodyValidate(type({ 
-      nome    : "string",
-      cnpj    : "string",
+    InputMiddleware.jsonBodyValidate(type({
+      nome: "string",
+      cnpj: "string",
       endereco: "string",
-      sigla   : "string",
+      sigla: "string",
       telefone: "string",
-      email   : "string.email"
+      email: "string.email"
     })),
     DatabaseMiddleware.inputBodyOnly,
     DatabaseMiddleware.insert({ table: "instituicao", returning: ["id", "nome", "cnpj", "endereco", "sigla", "telefone", "email"] }),
@@ -73,13 +73,13 @@ export default new Hono()
   .patch("/instituicao/:id",
     AuthController.isAdmin,
     InputMiddleware.jsonBodyParse,
-    InputMiddleware.jsonBodyValidate(type({ 
-      "nome?"    : "string",
-      "cnpj?"    : "string",
+    InputMiddleware.jsonBodyValidate(type({
+      "nome?": "string",
+      "cnpj?": "string",
       "endereco?": "string",
-      "sigla?"   : "string",
+      "sigla?": "string",
       "telefone?": "string",
-      "email?"   : "string.email"
+      "email?": "string.email"
     })),
     InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
     DatabaseMiddleware.inputMergeParamsAndBody,
@@ -109,7 +109,7 @@ export default new Hono()
     AuthController.isAdmin,
     InputMiddleware.paramsValidate(type({ instituicao_id: "string.uuid" })),
     DatabaseMiddleware.inputParamsOnly,
-    DatabaseMiddleware.select({ table: "campus", columns: ["id", "instituicao_id",  "nome", "sigla", "endereco", "email", "telefone", "cnpj"], where: ["instituicao_id"] }),
+    DatabaseMiddleware.select({ table: "campus", columns: ["id", "instituicao_id", "nome", "sigla", "endereco", "email", "telefone", "cnpj"], where: ["instituicao_id"] }),
     c => c.json(c.get<any>("databaseResult"))
   )
 
@@ -125,14 +125,14 @@ export default new Hono()
   .post("/campus",
     AuthController.isAdmin,
     InputMiddleware.jsonBodyParse,
-    InputMiddleware.jsonBodyValidate(type({ 
-      nome          : "string",
+    InputMiddleware.jsonBodyValidate(type({
+      nome: "string",
       instituicao_id: "string.uuid",
-      cnpj          : "string",
-      endereco      : "string",
-      sigla         : "string",
-      telefone      : "string",
-      email         : "string.email",
+      cnpj: "string",
+      endereco: "string",
+      sigla: "string",
+      telefone: "string",
+      email: "string.email",
     })),
     DatabaseMiddleware.inputMergeParamsAndBody,
     DatabaseMiddleware.insert({ table: "campus", returning: ["id", "nome", "sigla", "endereco", "email", "telefone", "cnpj"] }),
@@ -143,14 +143,14 @@ export default new Hono()
   .patch("/campus/:id",
     AuthController.isAdmin,
     InputMiddleware.jsonBodyParse,
-    InputMiddleware.jsonBodyValidate(type({ 
-      "nome?"          : "string",
+    InputMiddleware.jsonBodyValidate(type({
+      "nome?": "string",
       "instituicao_id?": "string.uuid",
-      "cnpj?"          : "string",
-      "endereco?"      : "string",
-      "sigla?"         : "string",
-      "telefone?"      : "string",
-      "email?"         : "string.email"
+      "cnpj?": "string",
+      "endereco?": "string",
+      "sigla?": "string",
+      "telefone?": "string",
+      "email?": "string.email"
     })),
     InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
     DatabaseMiddleware.inputMergeParamsAndBody,
@@ -173,7 +173,7 @@ export default new Hono()
     AuthController.isAdmin,
     InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
     DatabaseMiddleware.inputParamsOnly,
-    DatabaseMiddleware.select({ table: "campus", columns: ["id", "instituicao_id",  "nome", "sigla", "endereco", "email", "telefone", "cnpj"], where: ["id"] }),
+    DatabaseMiddleware.select({ table: "campus", columns: ["id", "instituicao_id", "nome", "sigla", "endereco", "email", "telefone", "cnpj"], where: ["id"] }),
     c => c.json(c.get<any>("databaseResult")[0] || null)
   )
 
@@ -189,11 +189,11 @@ export default new Hono()
     AuthMiddleware.authenticate,
     AuthMiddleware.userOwnership("id"),
     InputMiddleware.jsonBodyParse,
-    InputMiddleware.jsonBodyValidate(type({ 
-      nome     : "string",
-      email    : "string.email",
+    InputMiddleware.jsonBodyValidate(type({
+      nome: "string",
+      email: "string.email",
       campus_id: "string.uuid",
-      telefone : "string",
+      telefone: "string",
       descricao: "string"
     })),
     InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
@@ -210,6 +210,17 @@ export default new Hono()
     DatabaseMiddleware.inputParamsOnly,
     DatabaseMiddleware.select({ table: "user", columns: ["id", "nome", "email", "campus_id", "telefone", "descricao"], where: ["id"] }),
     c => c.json(c.get<any>("databaseResult")[0] || null)
+  )
+
+  .get("/publicador/:id/publicacao",
+    AuthMiddleware.authenticate,
+    AuthMiddleware.userOwnership("id"),
+    InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
+    DatabaseMiddleware.inputParamsOnly,
+    DatabaseMiddleware.select({
+      table: "publicacao", columns: ["id", "user_id", "titulo", "tipo", "resumo", "transcricao", "link", "data"], where: ["publicador_id"]
+    }),
+    c => c.json(c.get<any>("databaseResult"))
   )
 
   .get("/publicador/search/:query",
@@ -231,4 +242,65 @@ export default new Hono()
     c => c.json(c.get<any>("databaseResult"))
   )
 
-  // -------------------------------------------------------------------------------------------------------------------1
+  // --- PUBLICAÇÔES ---------------------------------------------------------------------------------------------------
+
+  .post("/publicacao",
+    AuthMiddleware.authenticate,
+    InputMiddleware.jsonBodyParse,
+    InputMiddleware.jsonBodyValidate(type({
+      user_id    : "string.uuid",
+      titulo     : "string",
+      tipo       : "string",
+      transcricao: "string",
+      resumo     : "string",
+      link       : "string.url",
+      data       : "string.date"
+    })),
+    DatabaseMiddleware.inputBodyOnly,
+    DatabaseMiddleware.insert({ table: "publicacao", returning: ["id", "user_id", "id", "user_id", "titulo", "tipo", "resumo", "transcricao", "link", "data"] }),
+    DatabaseMiddleware.index({ index: "publicacao", id: "id" }),
+    c => c.json(c.get<any>("databaseResult"))
+  )
+
+  .patch("/publicacao/:id",
+    AuthMiddleware.authenticate,
+    InputMiddleware.jsonBodyParse,
+    InputMiddleware.jsonBodyValidate(type({
+      "user_id?"    : "string.uuid",
+      "titulo?"     : "string",
+      "tipo?"       : "string",
+      "transcricao?": "string",
+      "resumo?"     : "string",
+      "link?"       : "string.url",
+      "data?"       : "string.date"
+    })),
+    InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
+    DatabaseMiddleware.inputMergeParamsAndBody,
+    DatabaseMiddleware.patch({ table: "publicacao", returning: ["id", "user_id", "titulo", "tipo", "transcricao", "resumo", "link"], where: ["id"] }),
+    DatabaseMiddleware.indexUpdate({ index: "publicacao", id: "id" }),
+    c => c.json(c.get<any>("databaseResult"))
+  )
+
+  .delete("/publicacao/:id",
+    AuthMiddleware.authenticate,
+    InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
+    DatabaseMiddleware.inputParamsOnly,
+    DatabaseMiddleware.deleteOne({ table: "publicacao", where: ["id"] }),
+    DatabaseMiddleware.indexDelete({ index: "publicacao", id: "id" }),
+    c => c.json(c.get<any>("databaseResult"))
+  )
+
+  .get("/publicacao/:id",
+    AuthMiddleware.authenticate,
+    InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
+    DatabaseMiddleware.inputParamsOnly,
+    DatabaseMiddleware.select({ table: "publicacao", columns: ["id", "user_id", "titulo", "tipo", "transcricao", "resumo", "link"], where: ["id"] }),
+    c => c.json(c.get<any>("databaseResult")[0] || null)
+  )
+
+  .get("/publicacao/search/:query",
+    AuthMiddleware.authenticate,
+    AuthMiddleware.adminOnly,
+    DatabaseMiddleware.search({ index: "publicacao" }),
+    c => c.json(c.get<any>("searchResult"))
+  )

@@ -16,7 +16,7 @@ const html =  /*html*/`
 
   <div class="card">
     <h2>Campus</h2>
-    <div class="campus-area"><div>
+    <div class="campus-area"></div>
     <button>Adicionar Campus</button>
   </div>
 `

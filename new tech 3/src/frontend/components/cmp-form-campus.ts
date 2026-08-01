@@ -4,7 +4,7 @@ const html =  /*html*/`
   <form>
     <fieldset>
       <input type="hidden" name="id" id="id">
-      <input type="hidden-" name="instituicao_id" id="instituicao_id">
+      <input type="hidden" name="instituicao_id" id="instituicao_id">
       <form>
         <input type="hidden" name="id" id="id">
         <div class="form-group">

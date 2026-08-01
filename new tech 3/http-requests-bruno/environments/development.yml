@@ -25,3 +25,5 @@ variables:
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOWZiOTQxLWFjNjctNzBkYy04NGU1LWRmMzkwOWI4ZWIxNCIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlcyI6WyJhZG1pbiJdLCJleHAiOjI2NzgzMjU1ODM1fQ.mo1D3J_b4P-4VHetwuByBu9IH2luTgB3BE5s0kmfPUA
   - name: last_created_campus_id
     value: 019fbab5-415c-7214-bf2e-bc96e6ebbdb7
+  - name: last_created_publicacao_id
+    value: 019fbb17-25f0-76e9-8cd2-c488a8c9b868
