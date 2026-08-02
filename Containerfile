@@ -10,15 +10,12 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     ffmpeg \
     git \
-    && rm -rf /var/lib/apt/lists/
-
+    curl
 
 # Ambiente Python isolado para WhisperX
 RUN python3 -m venv /opt/venv
 
-
 ENV PATH="/opt/venv/bin:$PATH"
-
 
 RUN pip install --upgrade pip && \
     pip install \
@@ -26,7 +23,11 @@ RUN pip install --upgrade pip && \
         whisperx
 
 
-WORKDIR /app
+RUN apt-get install -y \
+    bash \
+    bash-completion 
+
+WORKDIR /appnautilus
 
 
 USER bun

@@ -253,7 +253,7 @@ export default new Hono()
       // tipo       : "string",
       // transcricao: "string",
       // resumo     : "string",
-      analise    : "string",
+      // analise    : "string",
       link       : "string.url",
       data       : "string.date"
     })),
@@ -262,7 +262,26 @@ export default new Hono()
     DatabaseMiddleware.index({ index: "publicacao", id: "id" }),
 
     async (c, next) => {
+      const id = c.get<any>("databaseResult")?.id
+      const url = c.get<any>("databaseResult")?.link
+      const cp = await import("child_process")
+      const exec = cp.exec(`yt-dlp -f worst ${url} --output files/${id}`)
       
+      console.log(id)
+      console.log(url)
+
+      exec.on("error", (err) => {
+        console.error("yt-dlp error:", err)
+      })
+
+      exec.on("exit", (code, signal) => {
+        if (code !== 0) {
+          console.error(`yt-dlp exited with code ${code} and signal ${signal}`)
+        } else {
+          console.log(`yt-dlp finished downloading ${url} to /files/${id}`)
+        }
+      })
+
       return await next()
     },
 

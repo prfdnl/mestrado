@@ -1,15 +1,24 @@
 # asasdfkjdsakljf
 
-To install dependencies:
+whisperx a.webm --model small --language pt --device cuda --output_format srt
+whisperx a.webm --model small --language pt --compute_type float32 --output_format srt
 
-```bash
-bun install
-```
+whisperx a.webm --device cpu --model small --output_format srt
 
-To run:
 
-```bash
-bun run index.ts
-```
 
-This project was created using `bun init` in bun v1.3.13. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+
+
+
+
+
+
+
+
+pip uninstall -y torch torchvision torchaudio
+
+pip install \
+  torch==2.5.1 \
+  torchvision==0.20.1 \
+  torchaudio==2.5.1 \
+  --index-url https://download.pytorch.org/whl/cu124
