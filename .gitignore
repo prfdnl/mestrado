@@ -1,5 +1,6 @@
 .installers
 .data
+files/
 
 # dependencies (bun install)
 node_modules
