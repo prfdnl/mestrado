@@ -67,6 +67,17 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
  && rm -rf /var/lib/apt/lists/*
 
+
+# ------------------------------------------------------------------------------
+# Ambiente Python isolado 
+# ------------------------------------------------------------------------------
+
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --upgrade pip
+RUN pip install faster-whisper yt-dlp
+
+
 # -----------------------------------------------------------------------------
 # Bun
 # -----------------------------------------------------------------------------

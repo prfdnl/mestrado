@@ -27,3 +27,15 @@ pip install \
 
 
   sudo chown -R "$(whoami):$(id -gn)" .
+
+
+
+
+
+podman exec -it ollama ollama pull llama3.2:3b
+
+Modelo      RAM       Velocidade  Qualidade
+llama3.2:1b ~1 GB     ⭐⭐⭐⭐⭐  ⭐⭐
+llama3.2:3b ~2.5 GB   ⭐⭐⭐⭐    ⭐⭐⭐⭐
+qwen2.5:3b  ~2.5 GB   ⭐⭐⭐⭐    ⭐⭐⭐⭐⭐
+gemma3:4b   ~3 GB     ⭐⭐⭐      ⭐⭐⭐⭐⭐

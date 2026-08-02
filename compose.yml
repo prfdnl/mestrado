@@ -8,27 +8,19 @@ services:
 
   app:
     container_name: bun-app
-
     build:
       context: .
       dockerfile: Containerfile
-
     working_dir: /app
-
     volumes:
       - ./:/app:Z,U
       - ./.data/videos:/videos:Z,U
-
     ports:
-      - "3000:3000"
-
-    
+      - "3000:3000"    
     security_opt:
       - label=disable
-
     devices:
       - nvidia.com/gpu=all
-
     command:
       sleep infinity
 
@@ -84,8 +76,36 @@ services:
       - ./.data/elasticsearch:/usr/share/elasticsearch/data:Z,U
 
 
-  # whisperx:
-  #   build:
-  #     context: .
-  #     dockerfile: Containerfile.whisperx
-  #   container_name: whisperx
+  # --------------------------------------------------------------------------------------
+  # --- LiteLLM                                                                       ---
+  # --------------------------------------------------------------------------------------
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: litellm
+    command:
+      - "--config"
+      - "/app/config.yaml"
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml:Z
+    ports:
+      - "4000:4000"
+    depends_on:
+      - ollama
+
+  # --------------------------------------------------------------------------------------
+  # --- OLLAMA                                                                        ---
+  # --------------------------------------------------------------------------------------
+
+  ollama:
+    image: docker.io/ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./.data/ollama:/root/.ollama:Z,U
+    restart: unless-stopped
+    security_opt:
+      - label=disable
+    devices:
+      - nvidia.com/gpu=all
