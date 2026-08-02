@@ -5,7 +5,8 @@ import sys
 
 model = WhisperModel(
   # "tiny",
-  "small",
+  # "small",
+  "medium",
   device="cuda",
   compute_type="int8_float32"
 )

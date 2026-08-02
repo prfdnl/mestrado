@@ -4,7 +4,7 @@ import { InputMiddleware } from "../middlewares/middleware.input"
 import { DatabaseMiddleware } from "../middlewares/middleware.database"
 import { AuthController } from "../controllers/controller.auth"
 import { AuthMiddleware } from "../middlewares/middleware.auth"
-import { downlaodYt, stopDownloadYt, stopTranscription } from "../../cron"
+import { downlaodYt, stopDownloadYt, stopTranscription } from "../cron/cron"
 
 export default new Hono()
   .basePath("/api")

@@ -1,9 +1,10 @@
 import { mkdir, readdir, rename, unlink } from "fs/promises"
 import path from "path"
 import { summarize } from "./summarize"
+import { updateDatabase } from "./update-database"
 
 // Define the directories
-const root = `files`
+const root = `${__dirname}/../../../files`
 const downloadingDir = `${root}/downloading`
 const processingDir = `${root}/processing`
 const processedDir = `${root}/processed`
@@ -96,7 +97,7 @@ function stopTranscription(filename: string) {
 }
 
 async function transcription(filepath: string) {
-  const cp = Bun.spawn(["python", "fast-whisper.py", filepath], { stdout: "inherit", stderr: "inherit" })
+  const cp = Bun.spawn(["python", `${__dirname}/fast-whisper.py`, filepath], { stdout: "inherit", stderr: "inherit" })
   console.log("transcribing", filepath)
   const code = await cp.exited
   if (code === 128 + 10) {
@@ -117,17 +118,19 @@ async function transcription(filepath: string) {
 
 async function startCronJob() {
   // get all files from /files
-  const files = (await readdir("files", { withFileTypes: true }))
+  const files = (await readdir(`${root}`, { withFileTypes: true }))
     .filter((entry) => entry.isFile())
     .map((entry) => entry.name)
 
   // proccess the first file in the list
   if (files.length > 0) {
     console.log("Files in /files:", files)
-    const file = files[0]
+    const file = files[0] as string
     await rename(`${root}/${file}`, `${processingDir}/${file}`)
-    await transcription(`${processingDir}/${file}`)
-    await summarize(`${processingDir}/${file}.json`)
+    // await transcription(`${processingDir}/${file}`)
+    // await summarize(`${processingDir}/${file}.json`)
+    await updateDatabase(file, `${processingDir}/${file}.summary.md`, `${processingDir}/${file}.json`)
+    await unlink(`${processingDir}/${file}`)
   }
 
   // next
