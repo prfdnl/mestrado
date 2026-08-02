@@ -101,9 +101,6 @@ async function fastwhisper(filepath: string) {
   console.log("fast-whisper end", filepath)
 }
 
-
-
-
 async function aaaa() {
   const files = (await readdir("files", { withFileTypes: true }))
     .filter((entry) => entry.isFile())
@@ -118,9 +115,7 @@ async function aaaa() {
   }
 
   // 
-  setTimeout(aaaa, 5000)
+  setTimeout(aaaa, 1000 * 30) // 30 seconds
 }
-
-downlaodYt("https://www.youtube.com/watch?v=exTz3NjJsWI", "rola")
 
 aaaa()

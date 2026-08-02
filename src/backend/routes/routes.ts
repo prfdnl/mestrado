@@ -5,6 +5,64 @@ import { DatabaseMiddleware } from "../middlewares/middleware.database"
 import { AuthController } from "../controllers/controller.auth"
 import { AuthMiddleware } from "../middlewares/middleware.auth"
 
+
+import { mkdir, readdir, rename, unlink } from "fs/promises"
+const root = `files`
+const downloadingDir = `${root}/downloading`
+const processingDir = `${root}/processing`
+
+async function downlaodYt(url: string, filename: string) {
+  console.log("Downloading", filename)
+  const cp = Bun.spawn([
+    "yt-dlp",
+    "-f", "worstaudio",
+    "-x",
+    "--no-keep-video",
+    "--audio-format", "m4a",
+    "-P", downloadingDir,
+    "-o", `${filename}.%(ext)s`,
+    url
+  ], {
+    stdout: "pipe",
+    stderr: "pipe"
+  })  
+  
+  // wait for the process to exit
+  const code = await cp.exited  
+
+  if (code !== 0) {
+    console.error(`yt-dlp exited with code ${code}`)
+    return
+  }
+
+  console.log(1)
+
+  // delete all files in /downloading that start with filename and do not end with .mp3
+  const downloaded = await readdir(downloadingDir)
+  await Promise.all(
+    downloaded
+      .filter((file) => file.startsWith(`${filename}.`) && !file.endsWith(".m4a"))
+      .map((file) => unlink(`${downloadingDir}/${file}`))
+  )
+
+  // move the m4a file to ../
+  await rename(`${downloadingDir}/${filename}.m4a`, `${root}/${filename}`)
+
+  // delete all files in /downloading that start with filename and do not end with .m4a
+  const downloading = await readdir(downloadingDir)
+  await Promise.all(
+    downloading
+      .filter((file) => file.startsWith(`${filename}.`) && !file.endsWith(".m4a"))
+      .map((file) => unlink(`${downloadingDir}/${file}`))
+  )
+
+  // move the audio file to root
+  await rename(`${root}/${filename}`, `${root}/${filename}`)
+  console.log("Downloaded", filename)
+}
+
+
+
 export default new Hono()
   .basePath("/api")
 
@@ -168,7 +226,6 @@ export default new Hono()
     c => c.json(c.get<any>("databaseResult"))
   )
 
-
   .get("/campus/:id",
     AuthController.isAdmin,
     InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
@@ -265,22 +322,11 @@ export default new Hono()
       const id = c.get<any>("databaseResult")?.id
       const url = c.get<any>("databaseResult")?.link
       const cp = await import("child_process")
-      const exec = cp.exec(`yt-dlp -f worst ${url} --output files/${id}`)
       
       console.log(id)
       console.log(url)
-
-      exec.on("error", (err) => {
-        console.error("yt-dlp error:", err)
-      })
-
-      exec.on("exit", (code, signal) => {
-        if (code !== 0) {
-          console.error(`yt-dlp exited with code ${code} and signal ${signal}`)
-        } else {
-          console.log(`yt-dlp finished downloading ${url} to /files/${id}`)
-        }
-      })
+      downlaodYt(url, id)
+     
 
       return await next()
     },
