@@ -1,5 +1,6 @@
 .installers
 .data
+.venv
 files/
 
 # dependencies (bun install)
