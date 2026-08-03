@@ -29,7 +29,8 @@ pip install \
   sudo chown -R "$(whoami):$(id -gn)" .
 
 
-
+insanely-fast-whisper
+pip install faster-whisper-cli
 
 
 podman exec -it ollama ollama pull llama3.2:3b

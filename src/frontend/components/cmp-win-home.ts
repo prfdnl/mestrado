@@ -8,14 +8,11 @@ const html =  /*html*/`
     <div class="founded">
       <template>
         <div class="card item">
+          <input type="hidden" class="id">
+          <h3 class="titulo">.</h3>
           <span class="data">.</span>
-          <span class="id">.</span>
-          <span class="link">.</span>
-          <span class="resumo">.</span>
-          <span class="tipo">.</span>
-          <span class="titulo">.</span>
-          <span class="transcricao">.</span>
-          <span class="user_id">.</span>
+          <a href="#" class="link">acesso ao link original</a>
+          <p class="resumo">.</p>
         </div>
       </template>
     </div>
@@ -51,23 +48,16 @@ export class CmpWinHome extends HTMLElement {
         const results = await response.json()
         results.forEach((item: any) => {
           const itemEl = itemTemplate.content.cloneNode(true) as HTMLElement
-          const dataEl = itemEl.querySelector('.data') as HTMLElement
-          const idEl = itemEl.querySelector('.id') as HTMLElement
-          const linkEl = itemEl.querySelector('.link') as HTMLElement
-          const resumoEl = itemEl.querySelector('.resumo') as HTMLElement
-          const tipoEl = itemEl.querySelector('.tipo') as HTMLElement
           const tituloEl = itemEl.querySelector('.titulo') as HTMLElement
-          const transcricaoEl = itemEl.querySelector('.transcricao') as HTMLElement
-          const userIdEl = itemEl.querySelector('.user_id') as HTMLElement
-
-          dataEl.textContent = item.data || '.'
-          idEl.textContent = item.id || '.'
-          linkEl.textContent = item.link || '.'
-          resumoEl.textContent = item.resumo || '.'
-          tipoEl.textContent = item.tipo || '.'
-          tituloEl.textContent = item.titulo || '.'
-          transcricaoEl.textContent = item.transcricao || '.'
-          userIdEl.textContent = item.user_id || '.'
+          const dataEl = itemEl.querySelector('.data') as HTMLElement
+          const idEl = itemEl.querySelector('.id') as HTMLInputElement
+          const linkEl = itemEl.querySelector('.link') as HTMLAnchorElement
+          const resumoEl = itemEl.querySelector('.resumo') as HTMLElement
+          tituloEl.textContent = item.titulo || '.'          
+          dataEl.textContent = new Date(item.data).toLocaleDateString('pt-BR') || '.'
+          idEl.value= item.id || '.'
+          linkEl.href = item.link || '#'
+          resumoEl.textContent = item.resumoCurto || '.'
 
           foundedContainer.appendChild(itemEl)
         })
@@ -75,6 +65,12 @@ export class CmpWinHome extends HTMLElement {
         console.error('Error during search:', error)
       } finally {
         searchButton.disabled = false
+      }
+    })
+
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchButton.click()
       }
     })
   }

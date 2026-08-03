@@ -4,7 +4,7 @@ import { InputMiddleware } from "../middlewares/middleware.input"
 import { DatabaseMiddleware } from "../middlewares/middleware.database"
 import { AuthController } from "../controllers/controller.auth"
 import { AuthMiddleware } from "../middlewares/middleware.auth"
-import { downlaodYt, stopDownloadYt, stopTranscription } from "../cron/cron"
+import { downloadMedia } from "../cron/1.download"
 
 export default new Hono()
   .basePath("/api")
@@ -263,7 +263,7 @@ export default new Hono()
     async (c, next) => {
       const id = c.get<any>("databaseResult")?.id
       const url = c.get<any>("databaseResult")?.link
-      downlaodYt(url, id)
+      downloadMedia(url, id)
       return await next()
     },
     c => c.json(c.get<any>("databaseResult"))
@@ -295,8 +295,10 @@ export default new Hono()
     DatabaseMiddleware.deleteOne({ table: "publicacao", where: ["id"] }),
     (c, next) => {
       const id = c.get<any>("databaseInput")?.id
-      stopDownloadYt(id)
-      stopTranscription(id)
+      // stopDownloadYt(id)
+      // stopTranscription(id)
+      // stopSummarization(id)
+      // removeFile(id)
       return next()
     },
     DatabaseMiddleware.indexDelete({ index: "publicacao", id: "id" }),

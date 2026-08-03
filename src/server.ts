@@ -13,6 +13,6 @@ const { url } = Bun.serve({
 
 console.log(`Server started on ${url}`)
 
-// CHRON JOBS
-import { startCronJob } from "./backend/cron/cron"
-startCronJob()
+// --- CHRON JOBS ------------------------------------------------------------------------------------------------------
+
+import "./backend/cron/cron"
