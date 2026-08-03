@@ -126,9 +126,16 @@ export class CmpForm extends HTMLElement {
     const form = this.#root.querySelector('form') as HTMLFormElement;
     if (!form) return;
     for (const key in data) {
-      const input = form.querySelector(`[name="${key}"]`) as HTMLInputElement;
-      if (input) {
+      const input = form.querySelector(`[name="${key}"]`) as HTMLElement | null;
+      if (!input) 
+        continue;
+      if ('value' in input) {
         input.value = data[key];
+        continue;
+      }
+      if ('textContent' in input) {
+        input.textContent = data[key];
+        continue;
       }
     }
   }

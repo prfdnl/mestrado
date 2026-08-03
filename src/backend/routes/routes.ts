@@ -218,7 +218,7 @@ export default new Hono()
     InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
     DatabaseMiddleware.inputParamsOnly,
     DatabaseMiddleware.select({
-      table: "publicacao", columns: ["id", "user_id", "titulo", "tipo", "resumo", "transcricao", "link", "data"], where: ["publicador_id"]
+      table: "publicacao", columns: ["id", "user_id", "titulo", "tipo", "resumo_curto", "transcricao", "link", "data"], where: ["publicador_id"]
     }),
     c => c.json(c.get<any>("databaseResult"))
   )

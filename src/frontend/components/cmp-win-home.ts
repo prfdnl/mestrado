@@ -1,3 +1,5 @@
+import './cmp-win-chat'
+
 const html =  /*html*/`
   <div class="home">
     <h1>Search</h1>
@@ -92,7 +94,13 @@ export class CmpWinHome extends HTMLElement {
         return
       }
       const selectedIds = selectedItems.map(item => item.value)
-      console.log('Selected IDs for chat:', selectedIds)
+
+      const chatWindow = document.createElement('cmp-win-chat') as any
+      chatWindow.setPublicacoes(selectedIds)   /// selectedIds = selectedIds
+      const main = document.body.querySelector('main')
+      if (!main) return
+      main.innerHTML = ''
+      main.appendChild(chatWindow)
     })
   }
 }

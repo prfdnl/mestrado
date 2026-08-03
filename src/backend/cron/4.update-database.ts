@@ -31,7 +31,8 @@ async function updateDatabase(id: string) {
 
   // update postgres
   const result = await postgres`UPDATE publicacao SET 
-    resumo = ${summary}, 
+    resumo = ${summary},
+    resumo_curto = ${shortSummary},
     transcricao = ${transcription}
     WHERE id = ${id}`
 

@@ -66,8 +66,7 @@ const main = document.querySelector('main') as HTMLElement
     const path = window.location.pathname;
     if (routes[path]) {
       main.innerHTML = '';
-      const el = await routes[path]();
-      main.appendChild(el)
+      main.appendChild(await routes[path]())
       return 
     }
     main.innerHTML = `<h1>404 - Page Not Found</h1><p>The page "${path}" does not exist.</p>`;

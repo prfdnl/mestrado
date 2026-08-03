@@ -139,6 +139,7 @@ CREATE TABLE "publicacao" (
   "titulo"         VARCHAR(255) NOT NULL,
   "tipo"           VARCHAR(50),
   "resumo"         TEXT,
+  "resumo_curto"   TEXT,
   "transcricao"    TEXT,
   "link"           VARCHAR(255) NOT NULL,
   "data"           DATE,
