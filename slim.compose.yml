@@ -106,7 +106,3 @@ services:
     volumes:
       - ./.data/ollama:/root/.ollama:Z,U
     restart: unless-stopped
-    security_opt:
-      - label=disable
-    devices:
-      - nvidia.com/gpu=all

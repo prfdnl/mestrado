@@ -12,6 +12,35 @@ CREATE TABLE "instituicao" (
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+--- insert instituicao
+
+INSERT INTO "instituicao" (nome, sigla, cnpj, endereco, email, telefone) VALUES (
+  'Universidade Federal do Rio Grande do Norte', 
+  'UFRN', 
+  '12345678901234',
+  'Av. Senador Salgado Filho, 3000 - Lagoa Nova, Natal - RN, 59078-970', 
+  'contato@ufrn.edu.br',
+  '(84) 1234-5678'
+);
+
+INSERT INTO "instituicao" (nome, sigla, cnpj, endereco, email, telefone) VALUES (
+  'Instituto Federal Catarinense', 
+  'IFC', 
+  '98765432109876',
+  'Rua São Paulo, 285 - Centro, Blumenau - SC, 89010-000', 
+  'contato@ifc.edu.br',
+  '(47) 1234-5678'
+);
+
+INSERT INTO "instituicao" (nome, sigla, cnpj, endereco, email, telefone) VALUES (
+  'Universidade Federal de Santa Catarina', 
+  'UFSC', 
+  '11223344556677',
+  'Trindade, Florianópolis - SC, 88040-900', 
+  'contato@ufsc.edu.br',
+  '(48) 1234-5678'
+);
+
 --- CAMPUS -------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE "campus" (
@@ -25,6 +54,28 @@ CREATE TABLE "campus" (
   "telefone"       VARCHAR(20) NOT NULL,
   "created_at"     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   "updated_at"     TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+--- insert campus
+
+INSERT INTO "campus" (instituicao_id, nome, sigla, cnpj, endereco, email, telefone) VALUES (
+  (SELECT id FROM "instituicao" WHERE sigla = 'IFC'), 
+  'Campus Camboriú', 
+  'IFC-CAM', 
+  '12345678901234',
+  'Rua São Paulo, 285 - Centro, Camboriú - SC, 88330-000', 
+  'contato@ifc.edu.br',
+  '(47) 1234-5678'
+);
+
+INSERT INTO "campus" (instituicao_id, nome, sigla, cnpj, endereco, email, telefone) VALUES (
+  (SELECT id FROM "instituicao" WHERE sigla = 'IFC'), 
+  'Campus Blumenau (Sede)',
+  'IFC-BNU', 
+  '98765432109876',
+  'Rua São Paulo, 285 - Centro, Blumenau - SC, 89010-000', 
+  'contato@ifc.edu.br',
+  '(47) 1234-5678'
 );
 
 --- USER ---------------------------------------------------------------------------------------------------------------
