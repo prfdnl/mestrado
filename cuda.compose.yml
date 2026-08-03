@@ -1,4 +1,4 @@
-name: mestrado
+name: mestrado-cuda
 
 services:
 
@@ -10,7 +10,7 @@ services:
     container_name: bun-app
     build:
       context: .
-      dockerfile: Containerfile
+      dockerfile: cuda.containerfile
     working_dir: /app
     volumes:
       - ./:/app:Z,U

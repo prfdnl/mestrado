@@ -1,4 +1,23 @@
+
 # asasdfkjdsakljf
+
+
+
+```
+podman compose up -d
+podman exec -it ollama ollama pull llama3.2:3b
+```
+
+
+
+
+
+
+
+
+
+
+
 
 whisperx a.webm --model small --language pt --device cuda --output_format srt
 whisperx a.webm --model small --language pt --compute_type float32 --output_format srt

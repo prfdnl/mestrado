@@ -13,7 +13,6 @@ function waitExec() {
 }
 
 async function cron() {
-
   const files = (await readdir(config.root, { withFileTypes: true }))
     .filter((entry) => entry.isFile() && !entry.name.includes("."))
     .map((entry) => entry.name)
