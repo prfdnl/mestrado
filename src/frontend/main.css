@@ -119,5 +119,23 @@ aside .menu .group .items a:hover {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1rem;
+
+    .card:has(input:checked) {
+      border: 1px solid var(--accent-color, #666);
+    }
+
+    &:has(input:checked) .btn-chat {
+      transform: translateY(0rem);
+      opacity: 1;
+    }
+
+    .btn-chat {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      transform: translateY(1rem);
+      transition: .2s;
+      opacity: 0;
+    }
   }
 }

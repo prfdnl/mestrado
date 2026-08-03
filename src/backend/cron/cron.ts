@@ -7,7 +7,7 @@ import { updateDatabase } from "./4.update-database"
 
 function waitExec() {
   // setTimeout(cron, 1000 * 60 * 5) // wait X minutes and try again
-  setTimeout(cron, 1000 * 3)
+  setTimeout(() => cron(), 1000 * 3)
 }
 
 async function cron() {
@@ -17,8 +17,9 @@ async function cron() {
  
   const id = files[0]
 
-  if (!id)
+  if (!id) {
     return waitExec() 
+  }
 
   try {
     await transcribeAudio(id)

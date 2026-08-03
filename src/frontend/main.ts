@@ -52,6 +52,16 @@ const main = document.querySelector('main') as HTMLElement
     }
   }
 
+  document.querySelectorAll('a[href]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault()
+      const href = el.getAttribute('href')
+      if (!href) return
+      window.history.pushState({}, '', href)
+      routeGo()
+    })
+  })
+
   async function routeGo(e?: Event) {
     const path = window.location.pathname;
     if (routes[path]) {

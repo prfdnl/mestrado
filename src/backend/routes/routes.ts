@@ -255,7 +255,7 @@ export default new Hono()
       // resumo     : "string",
       // analise    : "string",
       link       : "string.url",
-      data       : "string.date"
+      "data?"    : "string.date"
     })),
     DatabaseMiddleware.inputBodyOnly,
     DatabaseMiddleware.insert({ table: "publicacao", returning: ["id", "user_id", "id", "user_id", "titulo", "tipo", "resumo", "transcricao", "link", "data"] }),

@@ -7,22 +7,25 @@ const html =  /*html*/`
     </search>
     <div class="founded">
       <template>
-        <div class="card item">
-          <input type="hidden" class="id">
+        <label class="card item">
+          <input name="id" type="checkbox" class="id">
           <h3 class="titulo">.</h3>
-          <span class="data">.</span>
           <a href="#" class="link">acesso ao link original</a>
           <p class="resumo">.</p>
-        </div>
+        </label>
       </template>
+      <button class="btn-chat">Chat</button>
     </div>
   </div>
 `
 
 export class CmpWinHome extends HTMLElement {
+  #results: any
+
   connectedCallback() {
     this.innerHTML = html;
     this.#attachSearchHandler()
+    this.#attachGoChatHandler()
   }
 
   #attachSearchHandler() {
@@ -31,9 +34,13 @@ export class CmpWinHome extends HTMLElement {
     const foundedContainer = this.querySelector('.founded') as HTMLDivElement
     const itemTemplate = foundedContainer.querySelector('template') as HTMLTemplateElement
 
+    const clearResults = () => {
+      foundedContainer.querySelectorAll('.item').forEach(item => item.remove())
+    }
+
     searchButton.addEventListener('click', async (e) => {
       e.preventDefault()
-      foundedContainer.innerHTML = ''
+      clearResults()
       try {
         searchButton.disabled = true
         const value = searchInput.value.trim().toLowerCase()
@@ -45,20 +52,17 @@ export class CmpWinHome extends HTMLElement {
           console.error('Search request failed:', response.statusText)
           return
         }
-        const results = await response.json()
+        const results = this.#results = await response.json()
         results.forEach((item: any) => {
           const itemEl = itemTemplate.content.cloneNode(true) as HTMLElement
           const tituloEl = itemEl.querySelector('.titulo') as HTMLElement
-          const dataEl = itemEl.querySelector('.data') as HTMLElement
           const idEl = itemEl.querySelector('.id') as HTMLInputElement
           const linkEl = itemEl.querySelector('.link') as HTMLAnchorElement
           const resumoEl = itemEl.querySelector('.resumo') as HTMLElement
-          tituloEl.textContent = item.titulo || '.'          
-          dataEl.textContent = new Date(item.data).toLocaleDateString('pt-BR') || '.'
-          idEl.value= item.id || '.'
+          tituloEl.textContent = item.titulo || '.'
+          idEl.value = item.id || '.'
           linkEl.href = item.link || '#'
           resumoEl.textContent = item.resumoCurto || '.'
-
           foundedContainer.appendChild(itemEl)
         })
       } catch (error) {
@@ -72,6 +76,23 @@ export class CmpWinHome extends HTMLElement {
       if (e.key === 'Enter') {
         searchButton.click()
       }
+    })
+  }
+
+  #attachGoChatHandler() {
+    const chatButton = this.querySelector('.btn-chat') as HTMLButtonElement
+    chatButton.addEventListener('click', () => {
+      if (!this.#results || this.#results.length === 0) {
+        console.warn('No results to chat about.')
+        return
+      }
+      const selectedItems = Array.from(this.querySelectorAll('.item input.id:checked')) as HTMLInputElement[]
+      if (selectedItems.length === 0) {
+        console.warn('No items selected for chat.')
+        return
+      }
+      const selectedIds = selectedItems.map(item => item.value)
+      console.log('Selected IDs for chat:', selectedIds)
     })
   }
 }

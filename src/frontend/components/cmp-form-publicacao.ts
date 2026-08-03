@@ -13,10 +13,6 @@ const html = /*html*/`
         <label for="link">Link</label>
         <input type="text" id="link" name="link" required>
       </div>
-      <div class="form-group">
-        <label for="data">Data</label>
-        <input type="date" id="data" name="data" required>
-      </div>
       <div class="form-group actions">
         <button type="button" class="btn-delete">excluir</button>
         <button type="button" class="btn-save">Salvar</button>
