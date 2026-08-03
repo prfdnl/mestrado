@@ -56,7 +56,7 @@ CREATE TABLE "campus" (
   "updated_at"     TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
---- insert campus
+--- insert campus IFC
 
 INSERT INTO "campus" (instituicao_id, nome, sigla, cnpj, endereco, email, telefone) VALUES (
   (SELECT id FROM "instituicao" WHERE sigla = 'IFC'), 
@@ -70,7 +70,7 @@ INSERT INTO "campus" (instituicao_id, nome, sigla, cnpj, endereco, email, telefo
 
 INSERT INTO "campus" (instituicao_id, nome, sigla, cnpj, endereco, email, telefone) VALUES (
   (SELECT id FROM "instituicao" WHERE sigla = 'IFC'), 
-  'Campus Blumenau (Sede)',
+  'Campus Blumenau',
   'IFC-BNU', 
   '98765432109876',
   'Rua São Paulo, 285 - Centro, Blumenau - SC, 89010-000', 
@@ -78,7 +78,31 @@ INSERT INTO "campus" (instituicao_id, nome, sigla, cnpj, endereco, email, telefo
   '(47) 1234-5678'
 );
 
---- USER ---------------------------------------------------------------------------------------------------------------
+--- insert campus UFRN
+
+INSERT INTO "campus" (instituicao_id, nome, sigla, cnpj, endereco, email, telefone) VALUES (
+  (SELECT id FROM "instituicao" WHERE sigla = 'UFRN'), 
+  'Campus Natal', 
+  'UFRN-NAT', 
+  '11223344556677',
+  'Av. Senador Salgado Filho, 3000 - Lagoa Nova, Natal - RN, 59078-970', 
+  'contato@ufrn.edu.br',
+  '(84) 1234-5678'
+);
+
+--- insert campus UFSC
+
+INSERT INTO "campus" (instituicao_id, nome, sigla, cnpj, endereco, email, telefone) VALUES (
+  (SELECT id FROM "instituicao" WHERE sigla = 'UFSC'), 
+  'Campus Florianópolis', 
+  'UFSC-FLN', 
+  '22334455667788',
+  'Trindade, Florianópolis - SC, 88040-900', 
+  'contato@ufsc.edu.br',
+  '(48) 1234-5678'
+);
+
+-- USER ---------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE "user" (
   "id"            UUID PRIMARY KEY DEFAULT uuidv7(),
@@ -98,11 +122,13 @@ CREATE TABLE "user" (
 
 --- insert user
 
-INSERT INTO "user" (username, password_hash, roles, active) VALUES (
+INSERT INTO "user" (username, password_hash, roles, active, nome, campus_id) VALUES (
   'admin', 
   '$argon2id$v=19$m=65536,p=2,t=3$pkLXYcAmdkgoMguxlTi04w$3ub93nO8CU9CghzvO/o7RT9tOi0orKUqjGXEgOlNryY', 
   ARRAY['admin','publisher'], 
-  TRUE
+  TRUE,
+  'Daniel',
+  (SELECT id FROM "campus" WHERE sigla = 'IFC-CAM')
 );
 
 --- PUBLICAÇÃO ---------------------------------------------------------------------------------------------------------

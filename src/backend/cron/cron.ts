@@ -5,8 +5,6 @@ import { transcribeAudio } from "./2.transcribe"
 import { summarize } from "./3.summarize"
 import { updateDatabase } from "./4.update-database"
 
-const id = "019fc4d0-d023-7329-8166-4a192310d9c8"
-
 function waitExec() {
   // setTimeout(cron, 1000 * 60 * 5) // wait X minutes and try again
   setTimeout(cron, 1000 * 3)
