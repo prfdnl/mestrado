@@ -22,6 +22,7 @@ async function cron() {
   }
 
   try {
+    console.log(`Processing id ${id}`)
     await transcribeAudio(id)
     await summarize(id)
     await updateDatabase(id)
