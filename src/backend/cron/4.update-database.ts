@@ -6,6 +6,8 @@ const pre = `${__filename.split("/").pop()} |`
 
 async function updateDatabase(id: string) {
 
+  console.log(pre, `Updating database`)
+
   if (!await Bun.file(`${config.wip}/${id}/summary`).exists()) {
     console.error(pre, `summary not found for id ${id}`)
     throw new Error(`summary not found for id ${id}`)
@@ -20,8 +22,6 @@ async function updateDatabase(id: string) {
     console.error(pre, `transcription not found for id ${id}`)
     throw new Error(`transcription not found for id ${id}`)
   }
-
-  console.log(pre, `Updating database`)
   
   const [summary, shortSummary, transcription] = await Promise.all([
     Bun.file(`${config.wip}/${id}/summary`).text(),

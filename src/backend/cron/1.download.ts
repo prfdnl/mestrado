@@ -4,7 +4,7 @@ import config from "./0.config"
 const pre = `${__filename.split("/").pop()} |`
 
 async function downloadMedia(url: string, id: string) {
-  
+  console.log(pre, `Downloading media for id ${id}`)
   if (await (Bun.file(`${config.root}/${id}`).exists())) {
     console.warn(pre, `skip, Audio file already exists for id ${id}, skipping download`)
     return

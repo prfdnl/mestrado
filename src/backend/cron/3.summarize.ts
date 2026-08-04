@@ -49,6 +49,7 @@ function formatTime(seconds: number) {
 
 async function summarize(id: string) {
   const jsonFilePath = `${config.wip}/${id}/transcription`
+  console.log(pre, `Summarizing transcription for id ${id}`)
 
   if (
     await Bun.file(`${config.wip}/${id}/summary`).exists() && 
@@ -57,8 +58,6 @@ async function summarize(id: string) {
     console.log(pre, `skip, Summary and short summary already exist for id ${id}, skipping`)
     return
   }
-
-  console.log(pre, `Summarizing transcription for id ${id}`)
 
   if (!(await Bun.file(jsonFilePath).exists())) {
     console.error(pre, `Transcription file does not exist for id ${id}, cannot summarize`)

@@ -3,6 +3,7 @@ import config from "./0.config"
 const pre = `${__filename.split("/").pop()} |`
 
 async function transcribeAudio(id: string) {
+  console.log(pre, `Transcribing audio for id ${id}`)
   const audioFilePath = `${config.root}/${id}`
 
   if (!(await Bun.file(audioFilePath).exists())) {
@@ -14,8 +15,6 @@ async function transcribeAudio(id: string) {
     console.warn(pre, `skip, Transcription already exists for id ${id}, skipping transcription`)
     return
   }
-
-  console.log(pre, `Transcribing audio for id ${id}`)
   
   // const cp = Bun.spawn(["python", `${__dirname}/fast-whisper.py`, audioFilePath], { stdout: "pipe", stderr: "pipe" })
   const cp = Bun.spawn(["faster-whisper", audioFilePath], { stdout: "pipe", stderr: "pipe" })
