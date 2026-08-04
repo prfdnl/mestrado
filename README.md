@@ -45,14 +45,14 @@ pip install \
 
 
 
-  sudo chown -R "$(whoami):$(id -gn)" .
-
+sudo chown -R "$(whoami):$(id -gn)" .
+podman exec -it bun-app bun create-database.ts
+podman exec -it ollama ollama pull llama3.2:3b
 
 insanely-fast-whisper
 pip install faster-whisper-cli
 
 
-podman exec -it ollama ollama pull llama3.2:3b
 
 Modelo      RAM       Velocidade  Qualidade
 llama3.2:1b ~1 GB     ⭐⭐⭐⭐⭐  ⭐⭐

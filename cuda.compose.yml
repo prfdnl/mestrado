@@ -23,7 +23,8 @@ services:
     devices:
       - nvidia.com/gpu=all
     command:
-      sleep infinity
+      bun dev
+      # sleep infinity
 
   # --------------------------------------------------------------------------------------
   # --- Postgres                                                                       ---
@@ -48,19 +49,19 @@ services:
   # --- ADMINER                                                                        ---
   # --------------------------------------------------------------------------------------
 
-  adminer:    
-    image: docker.io/adminer:latest
-    container_name: adminer
-    restart: unless-stopped
-    environment:
-      ADMINER_DEFAULT_SERVER: postgres
-    ports:
-      - "5050:8080"
-    depends_on:
-      - postgres
-    volumes:
-      - ./.data/adminer_data:/var/lib/adminer:Z,U
-    restart: unless-stopped
+  # adminer:    
+  #   image: docker.io/adminer:latest
+  #   container_name: adminer
+  #   restart: unless-stopped
+  #   environment:
+  #     ADMINER_DEFAULT_SERVER: postgres
+  #   ports:
+  #     - "5050:8080"
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - ./.data/adminer_data:/var/lib/adminer:Z,U
+  #   restart: unless-stopped
 
   # --------------------------------------------------------------------------------------
   # --- ELASTIC SEARCH                                                                 ---

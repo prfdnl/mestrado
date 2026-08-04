@@ -16,7 +16,12 @@ diga "Desculpe, nos itens selecionados não tem essa informação. os itens sele
 async function loadPublicacoesContext(pulicacoesIds: string[]) {
   const res = await postgres`SELECT * FROM publicacao WHERE id = ANY(${postgres.array(pulicacoesIds, 'uuid')})`
   // context = res.map((row: any) => `Title: ${row.titulo}\nSummary: ${row.resumo}`).join('\n\n')
-  context = res.map((row: any) => `Title: ${row.titulo}\nVideo Transciption: ${row.transcricao}`).join('\n\n')
+  context = res.map((row: any) => 
+    `Audio Title: ${row.titulo}\n`+
+    `Audio Transciption: ${row.transcricao}`+
+    `Audio Summary: ${row.resumo}\n`+
+    `Audio Link: ${row.link}`
+  ).join('\n\n')
 }
 
 function getChatId(ws: Bun.ServerWebSocket<unknown>) {
@@ -47,7 +52,7 @@ async function think(message: string) {
       },
       {
         role: "assistant",
-        content: "Você é um assistente de pesquisa que responde perguntas com base no contexto fornecido."
+        content: "Você é um assistente de pesquisa que responde perguntas com base no contexto de trancrições de audio."
       },
       {
         role: "user",
