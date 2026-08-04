@@ -1,24 +1,24 @@
-import './cmp-win-chat'
+import { CmpWinChat } from './cmp-win-chat'
 
 const html =  /*html*/`
-  <div class="home">
-    <h1>Search</h1>
-    <search>
-      <input type="search" placeholder="Search..." />
-      <button>Search</button>
-    </search>
-    <div class="founded">
-      <template>
-        <label class="card item">
-          <input name="id" type="checkbox" class="id">
-          <h3 class="titulo">.</h3>
-          <a href="#" class="link">acesso ao link original</a>
-          <p class="resumo">.</p>
-        </label>
-      </template>
-      <button class="btn-chat">Chat</button>
-    </div>
+<div class="home">
+  <h1>Search</h1>
+  <search>
+    <input type="search" placeholder="Search..." />
+    <button>Search</button>
+  </search>
+  <div class="founded">
+    <template>
+      <label class="card item">
+        <input name="id" type="checkbox" class="id">
+        <h3 class="titulo">.</h3>
+        <a href="#" class="link">acesso ao link original</a>
+        <p class="resumo">.</p>
+      </label>
+    </template>
+    <button class="btn-chat">Chat</button>
   </div>
+</div>
 `
 
 export class CmpWinHome extends HTMLElement {
@@ -94,9 +94,7 @@ export class CmpWinHome extends HTMLElement {
         return
       }
       const selectedIds = selectedItems.map(item => item.value)
-
-      const chatWindow = document.createElement('cmp-win-chat') as any
-      chatWindow.setPublicacoes(selectedIds)   /// selectedIds = selectedIds
+      const chatWindow = new CmpWinChat(selectedIds)
       const main = document.body.querySelector('main')
       if (!main) return
       main.innerHTML = ''

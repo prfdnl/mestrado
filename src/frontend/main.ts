@@ -4,6 +4,7 @@ import './components/cmp-login'
 import './components/cmp-win-home'
 import './components/cmp-win-publicador'
 import './components/cmp-win-instiuicao'
+import './components/cmp-win-chat'
 
 const main = document.querySelector('main') as HTMLElement
 
@@ -12,7 +13,6 @@ const main = document.querySelector('main') as HTMLElement
 {
   const response = await fetch('/api/refresh-token', { credentials: 'include' })
   const data = await response.json()
-
   globalThis.user = {
     token   : data?.token             || '',
     id      : data?.payload?.id       || '',
@@ -38,6 +38,7 @@ const main = document.querySelector('main') as HTMLElement
   const routes: Record<string, () => HTMLElement | Promise<HTMLElement>> = {}
   routes['/'] =  () => document.createElement('cmp-win-home')
   routes['/login'] = () => document.createElement('cmp-login')
+  routes['/chat'] = () => document.createElement('cmp-win-chat')
 
   if (globalThis.user.roles.includes('admin')) {
     routes['/publicadores'] = () => document.createElement('cmp-win-publicador')

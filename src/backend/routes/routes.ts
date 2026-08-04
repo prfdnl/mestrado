@@ -306,7 +306,6 @@ export default new Hono()
   )
 
   .get("/publicacao/:id",
-    AuthMiddleware.authenticate,
     InputMiddleware.paramsValidate(type({ id: "string.uuid" })),
     DatabaseMiddleware.inputParamsOnly,
     DatabaseMiddleware.select({ table: "publicacao", columns: ["id", "user_id", "titulo", "tipo", "transcricao", "resumo", "link"], where: ["id"] }),

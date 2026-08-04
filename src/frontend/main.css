@@ -154,14 +154,14 @@ cmp-win-chat {
       overflow-y: auto;  
 
       .message {
-        margin: 1rem 0 1.5rem 0;
-        width: 55%;
+        margin: 2rem 0 1.5rem 0;
+        max-width: 55%;
         border: 1px solid gray;
         padding: .5rem;
         border-radius: .5rem;
       }
 
-      .message.me {
+      .message.user {
         margin-left: auto;
         color: white;
       }

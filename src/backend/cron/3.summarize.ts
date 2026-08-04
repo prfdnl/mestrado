@@ -1,4 +1,4 @@
-import { llm } from "./llm"
+import { llm } from "../llm"
 import { mkdir, rename } from "node:fs/promises"
 import config from "./0.config"
 
