@@ -7,7 +7,8 @@ services:
   # --------------------------------------------------------------------------------------
 
   app:
-    container_name: bun-app
+    container_name: 
+      slim-bun-app
     build:
       context: .
       dockerfile: slim.containerfile
@@ -27,7 +28,7 @@ services:
 
   postgres:
     container_name: 
-      postgres
+      slim-postgres
     image: 
       docker.io/postgres:latest
     restart: unless-stopped
@@ -62,8 +63,9 @@ services:
   # --------------------------------------------------------------------------------------
 
   elasticsearch:
+    container_name: 
+      slim-elasticsearch
     image: docker.io/elasticsearch:9.1.0
-    container_name: elasticsearch
     restart: unless-stopped
     environment:
       - discovery.type=single-node
@@ -81,7 +83,8 @@ services:
 
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
-    container_name: litellm
+    container_name: 
+      slim-litellm
     restart: unless-stopped
     command:
       - "--config"
@@ -99,7 +102,8 @@ services:
 
   ollama:
     image: docker.io/ollama/ollama:latest
-    container_name: ollama
+    container_name: 
+      slim-ollama
     restart: unless-stopped
     ports:
       - "11434:11434"
