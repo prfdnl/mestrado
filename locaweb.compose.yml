@@ -1,26 +1,25 @@
-name: mestrado-slim
+name: mestrado-prod
 
 services:
 
   # --------------------------------------------------------------------------------------
-  # --- BUN + WHISPERX DEV                                                              ---
+  # --- BUN + WHISPER DEV                                                              ---
   # --------------------------------------------------------------------------------------
 
   app:
     container_name: 
-      slim-bun-app
+      prod-bun-app
     build:
       context: .
       dockerfile: slim.containerfile
     working_dir: /app
-    restart: unless-stopped
     volumes:
-      - ./:/app:Z,U
+      - ./app:/app:Z,U
+    restart: unless-stopped
     ports:
       - "3000:3000"
     command:
       bun dev
-      # sleep infinity
 
   # --------------------------------------------------------------------------------------
   # --- Postgres                                                                       ---
@@ -28,53 +27,36 @@ services:
 
   postgres:
     container_name: 
-      slim-postgres
+      prod-postgres
     image: 
       docker.io/postgres:latest
-    restart: unless-stopped
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-postgres}
     volumes:
       - ./.data/postgres_data:/var/lib/postgresql:Z,U
-
-  # --------------------------------------------------------------------------------------
-  # --- ADMINER                                                                        ---
-  # --------------------------------------------------------------------------------------
-
-  # adminer:    
-  #   image: docker.io/adminer:latest
-  #   container_name: adminer
-  #   restart: unless-stopped
-  #   environment:
-  #     ADMINER_DEFAULT_SERVER: postgres
-  #   ports:
-  #     - "5050:8080"
-  #   depends_on:
-  #     - postgres
-  #   volumes:
-  #     - ./.data/adminer_data:/var/lib/adminer:Z,U
+    restart: unless-stopped
 
   # --------------------------------------------------------------------------------------
   # --- ELASTIC SEARCH                                                                 ---
   # --------------------------------------------------------------------------------------
 
   elasticsearch:
-    container_name: 
-      slim-elasticsearch
     image: docker.io/elasticsearch:9.1.0
-    restart: unless-stopped
+    container_name: 
+      prod-elasticsearch
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
-    ports:
-      - "9200:9200"
+    expose:
+      - "9200"
     volumes:
       - ./.data/elasticsearch:/usr/share/elasticsearch/data:Z,U
+    restart: unless-stopped
 
 
   # --------------------------------------------------------------------------------------
@@ -84,15 +66,17 @@ services:
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
     container_name: 
-      slim-litellm
-    restart: unless-stopped
+      prod-litellm
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
     command:
       - "--config"
       - "/app/config.yaml"
     volumes:
-      - ./litellm_config.yaml:/app/config.yaml:Z
-    ports:
-      - "4000:4000"
+      - ./litellm_config.yaml:/app/config.yaml:Z,U
+    restart: unless-stopped
+    expose:
+      - "4000"
     depends_on:
       - ollama
 
@@ -100,13 +84,12 @@ services:
   # --- OLLAMA                                                                        ---
   # --------------------------------------------------------------------------------------
 
-  ollama:
-    image: docker.io/ollama/ollama:latest
-    container_name: 
-      slim-ollama
-    restart: unless-stopped
-    ports:
-      - "11434:11434"
-    volumes:
-      - ./.data/ollama:/root/.ollama:Z,U
-    restart: unless-stopped
+  # ollama:
+  #   image: docker.io/ollama/ollama:latest
+  #   container_name: 
+  #     prod-ollama
+  #   ports:
+  #     - "11434"
+  #   volumes:
+  #     - ./.data/ollama:/root/.ollama:Z,U
+  #   restart: unless-stopped
