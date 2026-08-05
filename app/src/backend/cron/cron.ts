@@ -27,13 +27,14 @@ async function cron() {
     await summarize(id)
     await updateDatabase(id)
     await rename(`${config.root}/${id}`, `${config.done}/${id}`)
-    await rm(`${config.wip}/${id}`, { recursive: true, force: true })
+    // await rm(`${config.wip}/${id}`, { recursive: true, force: true })
   } catch (error) {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     console.error(`Error processing id ${id}:`, error)
     return waitExec()
   }
 
-  cron()
+  return waitExec()
 }
 
 cron()

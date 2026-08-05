@@ -15,7 +15,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./:/app:Z,U
-      - ./.data/videos:/videos:Z,U
     ports:
       - "3000:3000"
     command:

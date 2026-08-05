@@ -1,3 +1,4 @@
+import { marked } from "marked"
 const html = /*html*/ `
   <div class="chat">
     <h1>Chat</h1>
@@ -49,11 +50,11 @@ export class CmpWinChat extends HTMLElement {
   }
 
 
-  #createMessageElement(message: string, isUser: boolean) {
+  async #createMessageElement(message: string, isUser: boolean) {
     const chatContentEl = this.querySelector('.chat-content') as HTMLDivElement
     const messageEl = document.createElement('div')
     messageEl.classList.add('message', isUser ? 'user' : 'ia')
-    messageEl.textContent = message
+    messageEl.innerHTML = await marked.parse(message)
     chatContentEl.appendChild(messageEl)
     return messageEl
   }

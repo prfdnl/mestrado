@@ -1,3 +1,4 @@
+import { marked } from "marked"
 import { CmpWinChat } from './cmp-win-chat'
 
 const html =  /*html*/`
@@ -55,7 +56,7 @@ export class CmpWinHome extends HTMLElement {
           return
         }
         const results = this.#results = await response.json()
-        results.forEach((item: any) => {
+        results.forEach(async (item: any) => {
           const itemEl = itemTemplate.content.cloneNode(true) as HTMLElement
           const tituloEl = itemEl.querySelector('.titulo') as HTMLElement
           const idEl = itemEl.querySelector('.id') as HTMLInputElement
@@ -64,7 +65,7 @@ export class CmpWinHome extends HTMLElement {
           tituloEl.textContent = item.titulo || '.'
           idEl.value = item.id || '.'
           linkEl.href = item.link || '#'
-          resumoEl.textContent = item.resumoCurto || '.'
+          resumoEl.innerHTML = await marked.parse(item.resumoCurto) || '.'
           foundedContainer.appendChild(itemEl)
         })
       } catch (error) {

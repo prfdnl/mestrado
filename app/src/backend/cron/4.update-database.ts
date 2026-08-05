@@ -5,8 +5,8 @@ import config from "./0.config"
 const pre = `${__filename.split("/").pop()} |`
 
 async function updateDatabase(id: string) {
-
   console.log(pre, `Updating database`)
+  const startTime = Date.now()
 
   if (!await Bun.file(`${config.wip}/${id}/summary`).exists()) {
     console.error(pre, `summary not found for id ${id}`)
@@ -38,6 +38,7 @@ async function updateDatabase(id: string) {
 
   if (result.count === 0) {
     console.error(pre, `No rows updated for id ${id}`)
+    await config.logTimeFile(`updateDatabase | ${id} | No rows updated`, startTime, Date.now())
     throw new Error(`No rows updated for id ${id}`)
   }
 
@@ -55,6 +56,8 @@ async function updateDatabase(id: string) {
     }
   })
 
+  const endTime = Date.now()
+  await config.logTimeFile(`updateDatabase | ${id}`, startTime, endTime)
 }
 
 export { updateDatabase }

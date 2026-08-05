@@ -3,7 +3,7 @@ name: mestrado-cuda
 services:
 
   # --------------------------------------------------------------------------------------
-  # --- BUN + WHISPERX DEV                                                              ---
+  # --- BUN + WHISPER DEV                                                              ---
   # --------------------------------------------------------------------------------------
 
   app:
@@ -13,8 +13,7 @@ services:
       dockerfile: cuda.containerfile
     working_dir: /app
     volumes:
-      - ./:/app:Z,U
-      - ./.data/videos:/videos:Z,U
+      - ./app:/app:Z,U
     restart: unless-stopped
     ports:
       - "3000:3000"    
@@ -23,8 +22,8 @@ services:
     devices:
       - nvidia.com/gpu=all
     command:
-      bun dev
-      # sleep infinity
+      # bun dev
+      sleep infinity
 
   # --------------------------------------------------------------------------------------
   # --- Postgres                                                                       ---
@@ -88,11 +87,13 @@ services:
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
     container_name: litellm
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
     command:
       - "--config"
       - "/app/config.yaml"
     volumes:
-      - ./litellm_config.yaml:/app/config.yaml:Z
+      - ./litellm_config.yaml:/app/config.yaml:Z,U
     restart: unless-stopped
     ports:
       - "4000:4000"

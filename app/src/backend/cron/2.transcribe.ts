@@ -4,6 +4,7 @@ const pre = `${__filename.split("/").pop()} |`
 
 async function transcribeAudio(id: string) {
   console.log(pre, `Transcribing audio for id ${id}`)
+  const startTime = Date.now()
   const audioFilePath = `${config.root}/${id}`
 
   if (!(await Bun.file(audioFilePath).exists())) {
@@ -22,6 +23,7 @@ async function transcribeAudio(id: string) {
   
   if (code !== 0) {
     console.error(`fastwhisper exited with code ${code}`)
+    await config.logTimeFile(`transcribeAudio | ${id} | fastwhisper failed`, startTime, Date.now())
     throw new Error(`fastwhisper exited with code ${code}`)
   }
   
@@ -29,6 +31,9 @@ async function transcribeAudio(id: string) {
   await mkdir(`${config.wip}/${id}`, { recursive: true })
   await rename(`${audioFilePath}.srt`, `${config.wip}/${id}/transcription`)
   console.log(pre, `Transcribed audio for id ${id}`)
+
+  const endTime = Date.now()
+  await config.logTimeFile(`transcribeAudio | ${id}`, startTime, endTime)
 }
 
 export { transcribeAudio }
