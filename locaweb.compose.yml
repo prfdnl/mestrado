@@ -77,8 +77,6 @@ services:
     restart: unless-stopped
     expose:
       - "4000"
-    depends_on:
-      - ollama
 
   # --------------------------------------------------------------------------------------
   # --- OLLAMA                                                                        ---
