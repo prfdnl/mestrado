@@ -133,7 +133,7 @@ export class CmpForm extends HTMLElement {
         input.value = data[key];
         continue;
       }
-      if ('textContent' in input) {
+      if ('textContent' in input && input.classList.contains('text-content')) {
         input.textContent = data[key];
         continue;
       }

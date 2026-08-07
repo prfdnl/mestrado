@@ -17,7 +17,7 @@ const html = /*html*/`
         <button type="button" class="btn-delete">excluir</button>
         <button type="button" class="btn-save">Salvar</button>
       </div>
-      <div class="form-group" name="resumo_curto">
+      <div class="form-group text-content" name="resumo_curto">
         [[ assim que a nossa ia processar o link, ela vai gerar um resumo curto do conteúdo e colocar aqui ]]
       </div>
     </fieldset>
